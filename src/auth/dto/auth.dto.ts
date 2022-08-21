@@ -1,4 +1,4 @@
-import { Equals, equals, IsEmail, IsNotEmpty, IsString, MinLength } from "class-validator"
+import { IsEmail, IsNotEmpty, IsString, MinLength, validate } from "class-validator"
 
 export class SignInDTO {
     @IsEmail()
@@ -25,7 +25,6 @@ export class SignUpDTO {
     @IsNotEmpty()
     password: string
 
-    // Falta verificar a igualdade
     @MinLength(6)
     @IsString()
     @IsNotEmpty()

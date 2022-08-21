@@ -18,4 +18,6 @@ model User {
   name String @unique
   email String @unique
   hash String
+
+  @@map("users")
 }
