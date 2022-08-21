@@ -1,6 +1,6 @@
-import { ForbiddenException, Injectable } from "@nestjs/common";
+import { ForbiddenException, HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { PrismaService } from "src/prisma/prisma.service";
-import { SignUpDTO } from "./dto";
+import { SignInDTO, SignUpDTO } from "./dto";
 import * as argon from "argon2";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
 
@@ -20,6 +20,9 @@ export class AuthService {
                 },
             })
             delete user.hash;
+            if (dto.password !== dto.confirmPassword) {
+                throw new HttpException("passwords not matches", HttpStatus.BAD_REQUEST);
+            }
             return user;
         } catch (error) {
             if (error instanceof PrismaClientKnownRequestError){
@@ -31,7 +34,23 @@ export class AuthService {
         }
     }
 
-    signin(){
-        return {msg:'signin'}
+    async signin(dto: SignInDTO){
+        const user = await this.prisma.user.findUnique({
+            where: {
+                email: dto.email,
+            },
+        })
+
+        if (!user) {
+            throw new ForbiddenException("Invalid credentials");
+        }
+
+        const pwMatches = await argon.verify(user.hash, dto.password,);
+
+        if (!pwMatches) {
+            throw new ForbiddenException("Invalid credentials");
+        }
+        delete user.hash;
+        return user;
     }
 }
