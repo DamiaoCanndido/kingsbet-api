@@ -57,7 +57,7 @@ export class AuthService {
             throw new ForbiddenException("Invalid credentials");
         }
 
-        const accessToken = await this.signToken(user.id, user.email);
+        const accessToken = await this.signToken(user.id);
         
         return {
             name: user.name,
@@ -66,10 +66,9 @@ export class AuthService {
         };
     }
 
-    async signToken(userId: string, email: string): Promise<string> {
+    async signToken(userId: string): Promise<string> {
         const payload = {
             sub: userId,
-            email,
         }
 
         return this.jwt.signAsync(payload, {
