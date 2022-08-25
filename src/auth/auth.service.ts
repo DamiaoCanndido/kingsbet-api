@@ -17,6 +17,9 @@ export class AuthService {
     
     async signup(dto: SignUpDTO){
         const hash = await argon.hash(dto.password);
+        if (dto.password !== dto.confirmPassword) {
+            throw new HttpException("passwords not matches", HttpStatus.BAD_REQUEST);
+        }
         try {
             const user = await this.prisma.user.create({
                 data: {
@@ -26,9 +29,6 @@ export class AuthService {
                 },
             })
             delete user.hash;
-            if (dto.password !== dto.confirmPassword) {
-                throw new HttpException("passwords not matches", HttpStatus.BAD_REQUEST);
-            }
             return user;
         } catch (error) {
             if (error instanceof PrismaClientKnownRequestError){
