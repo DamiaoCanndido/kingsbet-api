@@ -1,25 +1,47 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { CreateTeamDto, UpdateTeamDto } from './dto';
 import { S3 } from 'aws-sdk';
 import { ConfigService } from '@nestjs/config';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 
 @Injectable()
 export class TeamService {
 
-  constructor(private config: ConfigService){}
+  constructor(private config: ConfigService, private prisma: PrismaService){}
 
   async create(createTeamDto: CreateTeamDto, file: Express.Multer.File) {
 
-    const s3 = new S3();
+    try {
+      const s3 = new S3();
 
-    const shield = await s3.upload({
-      Bucket: this.config.get("AWS_STORAGE_BUCKET_NAME"),
-      ACL: "public-read",
-      Key: file.originalname,
-      Body: file.buffer,
-    }).promise()
+      const shield = await s3.upload({
+        Bucket: this.config.get("AWS_STORAGE_BUCKET_NAME"),
+        ACL: "public-read",
+        Key: file.originalname,
+        Body: file.buffer,
+      }).promise()
 
-    return {file: shield};
+      const team = await this.prisma.team.create({
+        data: {
+          name: createTeamDto.name,
+          country: createTeamDto.country,
+          stadium: createTeamDto.stadium,
+          teamType: createTeamDto.teamType,
+          shieldKey: shield.Key,
+          shieldUrl: shield.Location
+        }
+      })
+
+      return team;
+    } catch (error) {
+      if (error instanceof PrismaClientKnownRequestError){
+        if (error.code === 'P2002') {
+            throw new ForbiddenException("User already exists.")
+        }
+      }
+      throw error;
+    }
   }
 
   findAll() {

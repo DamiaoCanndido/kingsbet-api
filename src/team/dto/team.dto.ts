@@ -1,22 +1,27 @@
-import { IsNotEmpty, IsString } from "class-validator"
+import { IsEnum, IsNotEmpty, IsString } from "class-validator"
+
+export enum TeamType {
+    CLUB = "CLUB",
+    SELECTION = "SELECTION"
+}
 
 export class CreateTeamDto {
 
-    // @IsString()
-    // @IsNotEmpty()
+    @IsString()
+    @IsNotEmpty()
     name: string
     
-    // @IsString()
-    // @IsNotEmpty()
+    @IsString()
+    @IsNotEmpty()
     country: string
 
-    // @IsString()
-    // @IsNotEmpty()
+    @IsString()
+    @IsNotEmpty()
     stadium: string
 
-    // @IsString()
-    // @IsNotEmpty()
-    teamType: string
+    @IsEnum(TeamType)
+    @IsNotEmpty()
+    teamType: TeamType
 }
 
 export class UpdateTeamDto {}
