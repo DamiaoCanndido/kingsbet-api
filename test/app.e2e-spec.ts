@@ -1,7 +1,9 @@
 import { INestApplication, ValidationPipe } from "@nestjs/common";
+import * as pactum from "pactum";
 import { Test } from "@nestjs/testing";
 import { PrismaService } from "../src/prisma/prisma.service";
 import { AppModule } from "../src/app.module";
+import { SignUpDTO, SignInDTO } from "../src/auth/dto";
 
 describe('App e2e', () => {
   let app: INestApplication
@@ -19,9 +21,11 @@ describe('App e2e', () => {
       })
     );
     await app.init();
+    await app.listen(3333);
 
     prisma = app.get(PrismaService);
     await prisma.cleanDB();
+    pactum.request.setBaseUrl('http://localhost:3333/');
   })
 
   afterAll(() => {
@@ -30,10 +34,110 @@ describe('App e2e', () => {
   
   describe("Auth", () => {
     describe("SignUp", () => {
-      it.todo("Should signup")
+      const dto: SignUpDTO = {
+        name: "Tyr",
+        email: "tyr@gmail.com",
+        password: "123456",
+        confirmPassword: "123456"
+      }
+
+      it("Should signup", () => {
+        return pactum
+          .spec()
+          .post('auth/signup')
+          .withBody(dto)
+          .expectStatus(201)
+      })
+
+      it("Should throw email is empty", () => {
+        return pactum
+          .spec()
+          .post('auth/signup')
+          .withBody({
+            password: dto.password
+          })
+          .expectStatus(400)
+      })
+
+      it("Should throw password is empty", () => {
+        return pactum
+          .spec()
+          .post('auth/signup')
+          .withBody({
+            email: dto.email
+          })
+          .expectStatus(400)
+      })
+
+      it("Should throw no body provided", () => {
+        return pactum
+          .spec()
+          .post('auth/signup')
+          .expectStatus(400)
+      })
+
+      it("Should throw email is invalid", () => {
+        return pactum
+          .spec()
+          .post('auth/signup')
+          .withBody({
+            email: "tyr@com"
+          })
+          .expectStatus(400)
+      })
     });
+
     describe("SignIn", () => {
-      it.todo("Should signin")
+      const dto: SignInDTO = {
+        email: "tyr@gmail.com",
+        password: "123456",
+      } 
+
+      it("Should signin", () => {
+        return pactum
+          .spec()
+          .post('auth/signin')
+          .withBody(dto)
+          .expectStatus(201)
+          .stores('userAt', 'access_token')
+      })
+
+      it("Should throw email is empty", () => {
+        return pactum
+          .spec()
+          .post('auth/signin')
+          .withBody({
+            password: dto.password
+          })
+          .expectStatus(400)
+      })
+
+      it("Should throw password is empty", () => {
+        return pactum
+          .spec()
+          .post('auth/signin')
+          .withBody({
+            email: dto.email
+          })
+          .expectStatus(400)
+      })
+
+      it("Should throw no body provided", () => {
+        return pactum
+          .spec()
+          .post('auth/signin')
+          .expectStatus(400)
+      })
+
+      it("Should throw email is invalid", () => {
+        return pactum
+          .spec()
+          .post('auth/signin')
+          .withBody({
+            email: "tyr@com"
+          })
+          .expectStatus(400)
+      })
     });
   });
 
