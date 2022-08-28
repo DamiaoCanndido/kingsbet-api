@@ -1,5 +1,16 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFile } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseInterceptors,
+  UploadedFile,
+} from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { ValidateTeamShield } from './helpers';
 import { CreateTeamDto, UpdateTeamDto } from './dto';
 import { TeamService } from './team.service';
 
@@ -9,7 +20,10 @@ export class TeamController {
 
   @Post()
   @UseInterceptors(FileInterceptor('shield'))
-  create(@Body() createTeamDto: CreateTeamDto, @UploadedFile() file: Express.Multer.File) {
+  create(
+    @Body() createTeamDto: CreateTeamDto,
+    @UploadedFile(ValidateTeamShield) file: Express.Multer.File,
+  ) {
     return this.teamService.create(createTeamDto, file);
   }
 
