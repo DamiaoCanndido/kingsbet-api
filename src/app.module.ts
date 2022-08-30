@@ -4,6 +4,7 @@ import { UserModule } from './user/user.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { ConfigModule } from '@nestjs/config';
 import { TeamModule } from './team/team.module';
+import { ChampModule } from './champ/champ.module';
 
 @Module({
   imports: [
@@ -13,7 +14,7 @@ import { TeamModule } from './team/team.module';
     AuthModule, 
     UserModule, 
     PrismaModule, 
-    TeamModule,
+    TeamModule, ChampModule,
   ],
   controllers: [],
   providers: [],

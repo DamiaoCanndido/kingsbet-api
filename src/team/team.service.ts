@@ -4,6 +4,7 @@ import { S3 } from 'aws-sdk';
 import { ConfigService } from '@nestjs/config';
 import { PrismaService } from '../prisma/prisma.service';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
+import { UploadFile } from '../helpers/upload-file';
 
 @Injectable()
 export class TeamService {
@@ -13,14 +14,9 @@ export class TeamService {
   async create(createTeamDto: CreateTeamDto, file: Express.Multer.File) {
 
     try {
-      const s3 = new S3();
 
-      const shield = await s3.upload({
-        Bucket: this.config.get("AWS_STORAGE_BUCKET_NAME"),
-        ACL: "public-read",
-        Key: file.originalname,
-        Body: file.buffer,
-      }).promise()
+      const uploadFile = new UploadFile(this.config, file);
+      const shield = await uploadFile.upload();
 
       const team = await this.prisma.team.create({
         data: {
