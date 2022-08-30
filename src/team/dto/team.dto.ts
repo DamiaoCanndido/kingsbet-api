@@ -1,4 +1,4 @@
-import { IsEnum, IsNotEmpty, IsString } from "class-validator"
+import { IsEnum, IsNotEmpty, IsString, MaxLength, MinLength } from "class-validator"
 
 export enum TeamType {
     CLUB = "CLUB",
@@ -22,6 +22,12 @@ export class CreateTeamDto {
     @IsEnum(TeamType)
     @IsNotEmpty()
     teamType: TeamType
+
+    @IsString()
+    @IsNotEmpty()
+    @MaxLength(3)
+    @MinLength(3)
+    code: string
 }
 
 export class UpdateTeamDto {}

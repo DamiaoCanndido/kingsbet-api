@@ -28,8 +28,9 @@ export class TeamService {
           country: createTeamDto.country,
           stadium: createTeamDto.stadium,
           teamType: createTeamDto.teamType,
+          code: createTeamDto.code.toUpperCase(),
           shieldKey: shield.Key,
-          shieldUrl: shield.Location
+          shieldUrl: shield.Location,
         }
       })
 

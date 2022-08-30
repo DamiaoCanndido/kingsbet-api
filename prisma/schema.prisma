@@ -39,6 +39,7 @@ model Team {
   shieldKey String
   stadium String
   teamType TeamType
+  code String
 
   @@map("teams")
 }
