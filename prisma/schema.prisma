@@ -15,6 +15,11 @@ enum TeamType {
   SELECTION
 }
 
+enum ChampType {
+  LEAGUE
+  CUP
+}
+
 model User {
   id String @id @default(uuid())
   createdAt DateTime @default(now())
@@ -41,5 +46,62 @@ model Team {
   teamType TeamType
   code String
 
+  home Game[] @relation(name: "home")
+  away Game[] @relation(name: "away")
+
+
   @@map("teams")
+}
+
+// From here is still being thought
+model Champ {
+  id String @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name String @unique
+  country String
+  shieldUrl String
+  shieldKey String
+  champType ChampType
+
+  rounds Round[]
+
+
+  @@map("champs")
+}
+
+model Round {
+  id String @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name String
+  champId String
+  champ Champ @relation(fields: [champId], references: [id])
+
+  games Game[]
+
+
+  @@map("rounds")
+}
+
+model Game {
+  id String @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  homeId String
+  home Team @relation(name: "home", fields: [homeId], references: [id])
+  homeScore Int?
+
+  awayId String
+  away Team @relation(name: "away", fields: [awayId], references: [id])
+  awayScore Int?
+
+  roundId String
+  round Round @relation(fields: [roundId], references: [id])
+
+
+  @@map("games")
 }
