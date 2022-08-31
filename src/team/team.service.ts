@@ -1,10 +1,9 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateTeamDto, UpdateTeamDto } from './dto';
-import { S3 } from 'aws-sdk';
 import { ConfigService } from '@nestjs/config';
 import { PrismaService } from '../prisma/prisma.service';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
-import { UploadFile } from '../helpers/upload-file';
+import { FileHandler } from '../helpers/file-handler';
 
 @Injectable()
 export class TeamService {
@@ -15,8 +14,8 @@ export class TeamService {
 
     try {
 
-      const uploadFile = new UploadFile(this.config, file);
-      const shield = await uploadFile.upload();
+      const fileHandler = new FileHandler(this.config, file);
+      const shield = await fileHandler.upload();
 
       const team = await this.prisma.team.create({
         data: {
@@ -34,10 +33,10 @@ export class TeamService {
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError){
         if (error.code === 'P2002') {
-            throw new ForbiddenException("User already exists.")
+            throw new ForbiddenException("Team already exists.")
         }
       }
-      throw error;
+      throw new NotFoundException();
     }
   }
 
@@ -53,7 +52,22 @@ export class TeamService {
     return `This action updates a #${id} team`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} team`;
+  async remove(id: string) {
+    try {
+      const team = await this.prisma.team.delete({where: {id}})
+      const fileHandler = new FileHandler(this.config);
+      await fileHandler.remove(team.shieldKey);
+      return {
+        message: `The team ${team.name} has removed`,
+        statusCode: 200
+      }
+    } catch (error) {
+      if (error instanceof PrismaClientKnownRequestError){
+        if (error.code === 'P2002') {
+            throw new ForbiddenException("An error occurred during removal")
+        }
+      }
+      throw new NotFoundException();
+    }
   }
 }

@@ -8,8 +8,10 @@ import {
   Delete,
   UseInterceptors,
   UploadedFile,
+  UseGuards,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { JwtGuard } from '../auth/guard';
 import { ValidateTeamShield } from '../helpers';
 import { CreateTeamDto, UpdateTeamDto } from './dto';
 import { TeamService } from './team.service';
@@ -18,6 +20,7 @@ import { TeamService } from './team.service';
 export class TeamController {
   constructor(private readonly teamService: TeamService) {}
 
+  @UseGuards(JwtGuard)
   @Post()
   @UseInterceptors(FileInterceptor('shield'))
   create(
@@ -44,6 +47,6 @@ export class TeamController {
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.teamService.remove(+id);
+    return this.teamService.remove(id);
   }
 }

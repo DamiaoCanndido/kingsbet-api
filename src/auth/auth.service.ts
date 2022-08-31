@@ -1,4 +1,4 @@
-import { ForbiddenException, HttpException, HttpStatus, Injectable } from "@nestjs/common";
+import { ForbiddenException, HttpException, HttpStatus, Injectable, NotFoundException } from "@nestjs/common";
 import { SignInDTO, SignUpDTO } from "./dto";
 import * as argon from "argon2";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
@@ -36,7 +36,7 @@ export class AuthService {
                     throw new ForbiddenException("User already exists.")
                 }
             }
-            throw error;
+            throw new NotFoundException();
         }
     }
 
