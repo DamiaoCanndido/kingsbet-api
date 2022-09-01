@@ -1,7 +1,6 @@
-import { ForbiddenException, HttpException, HttpStatus, Injectable, NotFoundException } from "@nestjs/common";
+import { ForbiddenException, HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { SignInDTO, SignUpDTO } from "./dto";
 import * as argon from "argon2";
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
 import { JwtService } from "@nestjs/jwt";
 import { ConfigService } from "@nestjs/config";
 import { PrismaService } from "../prisma/prisma.service"
@@ -20,24 +19,16 @@ export class AuthService {
         if (dto.password !== dto.confirmPassword) {
             throw new HttpException("passwords not matches", HttpStatus.BAD_REQUEST);
         }
-        try {
-            const user = await this.prisma.user.create({
-                data: {
-                    name: dto.name,
-                    email: dto.email,
-                    hash,
-                },
-            })
-            delete user.hash;
-            return user;
-        } catch (error) {
-            if (error instanceof PrismaClientKnownRequestError){
-                if (error.code === 'P2002') {
-                    throw new ForbiddenException("User already exists.")
-                }
-            }
-            throw new NotFoundException();
-        }
+        
+        const user = await this.prisma.user.create({
+            data: {
+                name: dto.name,
+                email: dto.email,
+                hash,
+            },
+        })
+        delete user.hash;
+        return user; 
     }
 
     async signin(dto: SignInDTO){

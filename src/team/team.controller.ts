@@ -9,14 +9,17 @@ import {
   UseInterceptors,
   UploadedFile,
   UseGuards,
+  UseFilters,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { AllExceptionsFilter } from '../helpers/http-exception.filter';
 import { JwtGuard } from '../auth/guard';
-import { ValidateTeamShield } from '../helpers';
+import { ValidateTeamShield } from '../helpers/validate-file';
 import { CreateTeamDto, UpdateTeamDto } from './dto';
 import { TeamService } from './team.service';
 
 @Controller('team')
+@UseFilters(AllExceptionsFilter)
 export class TeamController {
   constructor(private readonly teamService: TeamService) {}
 
@@ -45,6 +48,7 @@ export class TeamController {
     return this.teamService.update(+id, updateTeamDto);
   }
 
+  @UseGuards(JwtGuard)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.teamService.remove(id);

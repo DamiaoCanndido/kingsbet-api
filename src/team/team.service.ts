@@ -1,8 +1,7 @@
-import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateTeamDto, UpdateTeamDto } from './dto';
 import { ConfigService } from '@nestjs/config';
 import { PrismaService } from '../prisma/prisma.service';
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import { FileHandler } from '../helpers/file-handler';
 
 @Injectable()
@@ -11,8 +10,6 @@ export class TeamService {
   constructor(private config: ConfigService, private prisma: PrismaService){}
 
   async create(createTeamDto: CreateTeamDto, file: Express.Multer.File) {
-
-    try {
 
       const fileHandler = new FileHandler(this.config, file);
       const shield = await fileHandler.upload();
@@ -30,14 +27,6 @@ export class TeamService {
       })
 
       return team;
-    } catch (error) {
-      if (error instanceof PrismaClientKnownRequestError){
-        if (error.code === 'P2002') {
-            throw new ForbiddenException("Team already exists.")
-        }
-      }
-      throw new NotFoundException();
-    }
   }
 
   findAll() {
@@ -53,21 +42,13 @@ export class TeamService {
   }
 
   async remove(id: string) {
-    try {
-      const team = await this.prisma.team.delete({where: {id}})
-      const fileHandler = new FileHandler(this.config);
-      await fileHandler.remove(team.shieldKey);
-      return {
-        message: `The team ${team.name} has removed`,
-        statusCode: 200
-      }
-    } catch (error) {
-      if (error instanceof PrismaClientKnownRequestError){
-        if (error.code === 'P2002') {
-            throw new ForbiddenException("An error occurred during removal")
-        }
-      }
-      throw new NotFoundException();
+
+    const team = await this.prisma.team.delete({where: {id}})
+    const fileHandler = new FileHandler(this.config);
+    await fileHandler.remove(team.shieldKey);
+    return {
+      message: `The team ${team.name} has removed`,
+      statusCode: 200
     }
   }
 }
