@@ -1,4 +1,5 @@
 import { ConfigService } from "@nestjs/config";
+import { randomUUID } from "crypto";
 import { S3 } from "aws-sdk";
 
 export class FileHandler {
@@ -6,11 +7,13 @@ export class FileHandler {
 
     async upload(): Promise<S3.ManagedUpload.SendData> {
         const s3 = new S3();
+        const uuid = randomUUID();
 
         const shield = await s3.upload({
             Bucket: this.config.get("AWS_STORAGE_BUCKET_NAME"),
+            ContentType: "image/png",
             ACL: "public-read",
-            Key: this.file.originalname,
+            Key: `${uuid}-${this.file.originalname}`,
             Body: this.file.buffer,
         }).promise()
 
