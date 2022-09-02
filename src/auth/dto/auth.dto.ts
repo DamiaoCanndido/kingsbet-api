@@ -30,9 +30,3 @@ export class SignUpDTO {
     @IsNotEmpty()
     confirmPassword: string
 }
-
-export class editNameDTO {
-    @IsString()
-    @IsNotEmpty()
-    name: string
-}
