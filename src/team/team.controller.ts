@@ -17,9 +17,9 @@ import { JwtGuard } from '../auth/guard';
 import { ValidateTeamShield } from '../helpers/validate-file';
 import { CreateTeamDto, UpdateTeamDto } from './dto';
 import { TeamService } from './team.service';
-import { Action, CaslAbilityFactory, TeamEntity } from '../casl/casl-ability.factory';
 import { CaslAbilityGuard } from '../casl/guard';
 import { CheckCaslAbility } from '../casl/decorators';
+import { TeamAbility } from '../casl/decorators/team-abilities/team-abilities';
 
 @Controller('team')
 @UseFilters(AllExceptionsFilter)
@@ -27,7 +27,7 @@ export class TeamController {
   constructor(private readonly teamService: TeamService) {}
 
   @UseGuards(JwtGuard, CaslAbilityGuard)
-  @CheckCaslAbility({action: Action.Create, subjects: TeamEntity})
+  @CheckCaslAbility(new TeamAbility().createTeam())
   @Post()
   @UseInterceptors(FileInterceptor('shield'))
   create(
@@ -53,7 +53,7 @@ export class TeamController {
   }
 
   @UseGuards(JwtGuard, CaslAbilityGuard)
-  @CheckCaslAbility({action: Action.Delete, subjects: TeamEntity})
+  @CheckCaslAbility(new TeamAbility().deleteTeam())
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.teamService.remove(id);

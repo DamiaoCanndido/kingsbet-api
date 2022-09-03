@@ -2,7 +2,7 @@ import { ForbiddenError } from '@casl/ability';
 import { Injectable, CanActivate, ExecutionContext, ForbiddenException } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { CaslAbilityFactory } from '../casl-ability.factory';
-import { CHECK_CASL_ABILITY, requiredRules } from '../decorators';
+import { CHECK_CASL_ABILITY, RequiredRules } from '../decorators';
 
 @Injectable()
 export class CaslAbilityGuard implements CanActivate {
@@ -12,7 +12,7 @@ export class CaslAbilityGuard implements CanActivate {
 ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const rules = this.reflector.get<requiredRules[]>(CHECK_CASL_ABILITY, context.getHandler()) || [];
+    const rules = this.reflector.get<RequiredRules[]>(CHECK_CASL_ABILITY, context.getHandler()) || [];
     const { user } = context.switchToHttp().getRequest();
     const ability = this.caslAbilityFactory.createForUser(user);
 

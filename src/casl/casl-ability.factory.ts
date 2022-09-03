@@ -1,6 +1,7 @@
 import { Ability, AbilityBuilder, AbilityClass, ExtractSubjectType, InferSubjects } from "@casl/ability";
 import { Injectable } from "@nestjs/common";
-import { User, Team, TeamType } from "@prisma/client";
+import { TeamEntity } from "../team/entity";
+import { UserEntity } from "../user/entity";
 
 export enum Action {
     Manage = 'manage',
@@ -8,29 +9,6 @@ export enum Action {
     Read = 'read',
     Update = 'update',
     Delete = 'delete',
-}
-
-export class UserEntity implements User {
-    id: string;
-    createdAt: Date;
-    updatedAt: Date;
-    name: string;
-    email: string;
-    hash: string;
-    isAdmin: boolean;
-}
-
-export class TeamEntity implements Team {
-    id: string;
-    createdAt: Date;
-    updatedAt: Date;
-    name: string;
-    country: string;
-    shieldUrl: string;
-    shieldKey: string;
-    stadium: string;
-    teamType: TeamType;
-    code: string;
 }
 
 export type Subjects = InferSubjects<typeof TeamEntity | typeof UserEntity> | 'all';
@@ -48,6 +26,7 @@ export class CaslAbilityFactory {
           can(Action.Manage, 'all'); // read-write access to everything
         } else {
           can(Action.Read, 'all');
+          cannot(Action.Create, TeamEntity).because('Only admins can create teams')
           cannot(Action.Delete, TeamEntity).because('Only admins can delete teams')
         }
     
