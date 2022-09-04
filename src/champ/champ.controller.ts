@@ -1,8 +1,16 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { ChampService } from './champ.service';
-import { CreateChampDto, UpdateChampDto } from './dto';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from "@nestjs/common";
+import { ChampService } from "./champ.service";
+import { CreateChampDto, UpdateChampDto } from "./dto";
 
-@Controller('champ')
+@Controller("champ")
 export class ChampController {
   constructor(private readonly champService: ChampService) {}
 
@@ -16,18 +24,18 @@ export class ChampController {
     return this.champService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
+  @Get(":id")
+  findOne(@Param("id") id: string) {
     return this.champService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateChampDto: UpdateChampDto) {
+  @Patch(":id")
+  update(@Param("id") id: string, @Body() updateChampDto: UpdateChampDto) {
     return this.champService.update(+id, updateChampDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
+  @Delete(":id")
+  remove(@Param("id") id: string) {
     return this.champService.remove(+id);
   }
 }

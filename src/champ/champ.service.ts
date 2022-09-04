@@ -1,10 +1,10 @@
-import { Injectable } from '@nestjs/common';
-import { CreateChampDto, UpdateChampDto } from './dto';
+import { Injectable } from "@nestjs/common";
+import { CreateChampDto, UpdateChampDto } from "./dto";
 
 @Injectable()
 export class ChampService {
   create(createChampDto: CreateChampDto) {
-    return 'This action adds a new champ';
+    return "This action adds a new champ";
   }
 
   findAll() {
