@@ -1,6 +1,7 @@
 import {
   IsEnum,
   IsNotEmpty,
+  IsOptional,
   IsString,
   MaxLength,
   MinLength,
@@ -35,4 +36,18 @@ export class CreateTeamDto {
   code: string;
 }
 
-export class UpdateTeamDto {}
+export class UpdateTeamDto {
+  @IsString()
+  @IsOptional()
+  name: string;
+
+  @IsString()
+  @IsOptional()
+  stadium: string;
+
+  @IsString()
+  @IsOptional()
+  @MaxLength(3)
+  @MinLength(3)
+  code: string;
+}

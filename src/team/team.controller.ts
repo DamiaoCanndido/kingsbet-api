@@ -3,7 +3,6 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Delete,
   UseInterceptors,
@@ -20,6 +19,7 @@ import { TeamService } from "./team.service";
 import { CaslAbilityGuard } from "../casl/guard";
 import { CheckCaslAbility } from "../casl/decorators";
 import { TeamAbility } from "../casl/decorators/team-abilities/team-abilities";
+import { Put } from "@nestjs/common/decorators";
 
 @Controller("team")
 @UseFilters(AllExceptionsFilter)
@@ -47,9 +47,9 @@ export class TeamController {
     return this.teamService.findOne(+id);
   }
 
-  @Patch(":id")
+  @Put(":id")
   update(@Param("id") id: string, @Body() updateTeamDto: UpdateTeamDto) {
-    return this.teamService.update(+id, updateTeamDto);
+    return this.teamService.update(id, updateTeamDto);
   }
 
   @UseGuards(JwtGuard, CaslAbilityGuard)

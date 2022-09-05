@@ -27,15 +27,16 @@ export class TeamService {
     return team;
   }
 
-  findAll() {
-    return `This action returns all team`;
+  async findAll() {
+    const teams = await this.prisma.team.findMany();
+    return teams;
   }
 
   findOne(id: number) {
     return `This action returns a #${id} team`;
   }
 
-  update(id: number, updateTeamDto: UpdateTeamDto) {
+  update(id: string, updateTeamDto: UpdateTeamDto) {
     return `This action updates a #${id} team`;
   }
 
