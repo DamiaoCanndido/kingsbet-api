@@ -35,6 +35,7 @@ export class CaslAbilityFactory {
     } else {
       can(Action.Read, "all");
       cannot(Action.Create, TeamEntity).because("Only admins can create teams");
+      cannot(Action.Update, TeamEntity).because("Only admins can update teams");
       cannot(Action.Delete, TeamEntity).because("Only admins can delete teams");
     }
 

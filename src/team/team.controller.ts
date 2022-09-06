@@ -47,6 +47,8 @@ export class TeamController {
     return this.teamService.findOne(id);
   }
 
+  @UseGuards(JwtGuard, CaslAbilityGuard)
+  @CheckCaslAbility(new TeamAbility().updateTeam())
   @Put(":id")
   update(@Param("id") id: string, @Body() updateTeamDto: UpdateTeamDto) {
     return this.teamService.update(id, updateTeamDto);

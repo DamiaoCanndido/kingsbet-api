@@ -40,8 +40,12 @@ export class TeamService {
     return team;
   }
 
-  update(id: string, updateTeamDto: UpdateTeamDto) {
-    return `This action updates a #${id} team`;
+  async update(id: string, updateTeamDto: UpdateTeamDto) {
+    const team = await this.prisma.team.update({
+      where: { id },
+      data: updateTeamDto,
+    });
+    return team;
   }
 
   async remove(id: string) {
