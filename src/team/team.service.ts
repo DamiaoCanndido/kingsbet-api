@@ -3,6 +3,7 @@ import { CreateTeamDto, UpdateTeamDto } from "./dto";
 import { ConfigService } from "@nestjs/config";
 import { PrismaService } from "../prisma/prisma.service";
 import { FileHandler } from "../helpers/file-handler";
+import { Team } from "@prisma/client";
 
 @Injectable()
 export class TeamService {
@@ -32,8 +33,11 @@ export class TeamService {
     return teams;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} team`;
+  async findOne(id: string) {
+    const team = await this.prisma.team.findUnique({
+      where: { id },
+    });
+    return team;
   }
 
   update(id: string, updateTeamDto: UpdateTeamDto) {
