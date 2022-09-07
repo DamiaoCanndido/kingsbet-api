@@ -59,35 +59,58 @@ model Champ {
   shieldUrl String
   shieldKey String
   champType ChampType
-  rounds    Round[]
+  groups    Group[]
+  Round     Round[]
 
   @@map("champs")
 }
 
-model Round {
+model Group {
   id        String   @id @default(uuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   name      String
   champId   String
-  champ     Champ    @relation(fields: [champId], references: [id])
+  Champ     Champ    @relation(fields: [champId], references: [id], onDelete: Cascade)
+  rounds    Round[]
   games     Game[]
+
+  @@map("groups")
+}
+
+model Round {
+  id          String   @id @default(uuid())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  name        String
+  champId     String
+  champ       Champ    @relation(fields: [champId], references: [id], onDelete: Cascade)
+  games       Game[]
+  groupId     String?
+  Group       Group?   @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  playOffs    Boolean  @default(false)
+  numberGames Int
 
   @@map("rounds")
 }
 
 model Game {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  homeId    String
-  home      Team     @relation(name: "home", fields: [homeId], references: [id])
-  homeScore Int?
-  awayId    String
-  away      Team     @relation(name: "away", fields: [awayId], references: [id])
-  awayScore Int?
-  roundId   String
-  round     Round    @relation(fields: [roundId], references: [id])
+  id            String   @id @default(uuid())
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  homeId        String
+  home          Team     @relation(name: "home", fields: [homeId], references: [id])
+  homeScore     Int?
+  awayId        String
+  away          Team     @relation(name: "away", fields: [awayId], references: [id])
+  awayScore     Int?
+  roundId       String
+  round         Round    @relation(fields: [roundId], references: [id], onDelete: Cascade)
+  groupId       String?
+  Group         Group?   @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  playOffs      Boolean  @default(false)
+  homeKickScore Int?
+  awayKickScore Int?
 
   @@map("games")
 }
