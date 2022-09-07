@@ -5,6 +5,7 @@ import { S3 } from "aws-sdk";
 export class FileHandler {
   constructor(
     private config: ConfigService,
+    private folder?: string,
     private file?: Express.Multer.File,
   ) {}
 
@@ -17,7 +18,7 @@ export class FileHandler {
         Bucket: this.config.get("AWS_STORAGE_BUCKET_NAME"),
         ContentType: "image/png",
         ACL: "public-read",
-        Key: `${uuid}-${this.file.originalname}`,
+        Key: `${this.folder}/${uuid}-${this.file.originalname}`,
         Body: this.file.buffer,
       })
       .promise();

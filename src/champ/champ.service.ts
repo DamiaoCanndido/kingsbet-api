@@ -1,25 +1,57 @@
 import { Injectable } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
+import { FileHandler } from "../helpers/file-handler";
+import { PrismaService } from "../prisma/prisma.service";
 import { CreateChampDto, UpdateChampDto } from "./dto";
 
 @Injectable()
 export class ChampService {
-  create(createChampDto: CreateChampDto) {
-    return "This action adds a new champ";
+  constructor(private config: ConfigService, private prisma: PrismaService) {}
+
+  async create(createChampDto: CreateChampDto, file: Express.Multer.File) {
+    const fileHandler = new FileHandler(this.config, "Champ", file);
+    const shield = await fileHandler.upload();
+
+    const champ = await this.prisma.champ.create({
+      data: {
+        name: createChampDto.name,
+        country: createChampDto.country,
+        champType: createChampDto.champType,
+        shieldKey: shield.Key,
+        shieldUrl: shield.Location,
+      },
+    });
+
+    return champ;
   }
 
-  findAll() {
-    return `This action returns all champ`;
+  async findAll() {
+    const champs = await this.prisma.champ.findMany();
+    return champs;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} champ`;
+  async findOne(id: string) {
+    const champ = await this.prisma.champ.findUnique({
+      where: { id },
+    });
+    return champ;
   }
 
-  update(id: number, updateChampDto: UpdateChampDto) {
-    return `This action updates a #${id} champ`;
+  async update(id: string, updateChampDto: UpdateChampDto) {
+    const champ = await this.prisma.champ.update({
+      where: { id },
+      data: updateChampDto,
+    });
+    return champ;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} champ`;
+  async remove(id: string) {
+    const champ = await this.prisma.champ.delete({ where: { id } });
+    const fileHandler = new FileHandler(this.config);
+    await fileHandler.remove(champ.shieldKey);
+    return {
+      message: `The champ ${champ.name} has removed`,
+      statusCode: 200,
+    };
   }
 }

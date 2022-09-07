@@ -3,20 +3,31 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Delete,
+  UseFilters,
+  UseInterceptors,
+  UploadedFile,
+  Put,
 } from "@nestjs/common";
+import { FileInterceptor } from "@nestjs/platform-express";
+import { ValidateTeamShield } from "../helpers/validate-file";
+import { AllExceptionsFilter } from "../helpers/http-exception.filter";
 import { ChampService } from "./champ.service";
 import { CreateChampDto, UpdateChampDto } from "./dto";
 
 @Controller("champ")
+@UseFilters(AllExceptionsFilter)
 export class ChampController {
   constructor(private readonly champService: ChampService) {}
 
   @Post()
-  create(@Body() createChampDto: CreateChampDto) {
-    return this.champService.create(createChampDto);
+  @UseInterceptors(FileInterceptor("shield"))
+  create(
+    @Body() createChampDto: CreateChampDto,
+    @UploadedFile(ValidateTeamShield) file: Express.Multer.File,
+  ) {
+    return this.champService.create(createChampDto, file);
   }
 
   @Get()
@@ -26,16 +37,16 @@ export class ChampController {
 
   @Get(":id")
   findOne(@Param("id") id: string) {
-    return this.champService.findOne(+id);
+    return this.champService.findOne(id);
   }
 
-  @Patch(":id")
+  @Put(":id")
   update(@Param("id") id: string, @Body() updateChampDto: UpdateChampDto) {
-    return this.champService.update(+id, updateChampDto);
+    return this.champService.update(id, updateChampDto);
   }
 
   @Delete(":id")
   remove(@Param("id") id: string) {
-    return this.champService.remove(+id);
+    return this.champService.remove(id);
   }
 }

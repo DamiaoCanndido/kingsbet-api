@@ -3,14 +3,13 @@ import { CreateTeamDto, UpdateTeamDto } from "./dto";
 import { ConfigService } from "@nestjs/config";
 import { PrismaService } from "../prisma/prisma.service";
 import { FileHandler } from "../helpers/file-handler";
-import { Team } from "@prisma/client";
 
 @Injectable()
 export class TeamService {
   constructor(private config: ConfigService, private prisma: PrismaService) {}
 
   async create(createTeamDto: CreateTeamDto, file: Express.Multer.File) {
-    const fileHandler = new FileHandler(this.config, file);
+    const fileHandler = new FileHandler(this.config, "Team", file);
     const shield = await fileHandler.upload();
 
     const team = await this.prisma.team.create({
