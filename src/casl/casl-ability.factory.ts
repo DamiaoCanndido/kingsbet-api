@@ -6,6 +6,7 @@ import {
   InferSubjects,
 } from "@casl/ability";
 import { Injectable } from "@nestjs/common";
+import { ChampEntity } from "../champ/entity";
 import { TeamEntity } from "../team/entity";
 import { UserEntity } from "../user/entity";
 
@@ -18,7 +19,7 @@ export enum Action {
 }
 
 export type Subjects =
-  | InferSubjects<typeof TeamEntity | typeof UserEntity>
+  | InferSubjects<typeof TeamEntity | typeof UserEntity | typeof ChampEntity>
   | "all";
 
 export type AppAbility = Ability<[Action, Subjects]>;
@@ -37,6 +38,16 @@ export class CaslAbilityFactory {
       cannot(Action.Create, TeamEntity).because("Only admins can create teams");
       cannot(Action.Update, TeamEntity).because("Only admins can update teams");
       cannot(Action.Delete, TeamEntity).because("Only admins can delete teams");
+
+      cannot(Action.Create, ChampEntity).because(
+        "Only admins can create champs",
+      );
+      cannot(Action.Update, ChampEntity).because(
+        "Only admins can update champs",
+      );
+      cannot(Action.Delete, ChampEntity).because(
+        "Only admins can delete champs",
+      );
     }
 
     return build({
