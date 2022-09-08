@@ -26,7 +26,9 @@ export class ChampService {
   }
 
   async findAll() {
-    const champs = await this.prisma.champ.findMany();
+    const champs = await this.prisma.champ.findMany({
+      include: { rounds: {} },
+    });
     return champs;
   }
 

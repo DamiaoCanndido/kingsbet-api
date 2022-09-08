@@ -6,6 +6,7 @@ import { ConfigModule } from "@nestjs/config";
 import { TeamModule } from "./team/team.module";
 import { ChampModule } from "./champ/champ.module";
 import { CaslModule } from "./casl/casl.module";
+import { GroupModule } from './group/group.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { CaslModule } from "./casl/casl.module";
     TeamModule,
     ChampModule,
     CaslModule,
+    GroupModule,
   ],
   controllers: [],
   providers: [],
