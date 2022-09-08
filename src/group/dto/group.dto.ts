@@ -14,8 +14,4 @@ export class UpdateGroupDto {
   @IsString()
   @IsOptional()
   name: string;
-
-  @IsString()
-  @IsOptional()
-  champId: string;
 }

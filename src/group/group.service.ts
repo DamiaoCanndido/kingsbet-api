@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { PrismaService } from "../prisma/prisma.service";
-import { CreateGroupDto, UpdateGroupDto } from "./dto/create-group.dto";
+import { CreateGroupDto, UpdateGroupDto } from "./dto/group.dto";
 
 @Injectable()
 export class GroupService {
@@ -14,11 +14,6 @@ export class GroupService {
   async findByChamp(champId: string) {
     const groups = await this.prisma.group.findMany({ where: { champId } });
     return groups;
-  }
-
-  async findOne(id: string) {
-    const group = await this.prisma.group.findUnique({ where: { id } });
-    return group;
   }
 
   async update(id: string, updateGroupDto: UpdateGroupDto) {

@@ -6,6 +6,7 @@ import {
   InferSubjects,
 } from "@casl/ability";
 import { Injectable } from "@nestjs/common";
+import { GroupEntity } from "../group/entity";
 import { ChampEntity } from "../champ/entity";
 import { TeamEntity } from "../team/entity";
 import { UserEntity } from "../user/entity";
@@ -19,7 +20,12 @@ export enum Action {
 }
 
 export type Subjects =
-  | InferSubjects<typeof TeamEntity | typeof UserEntity | typeof ChampEntity>
+  | InferSubjects<
+      | typeof TeamEntity
+      | typeof UserEntity
+      | typeof ChampEntity
+      | typeof GroupEntity
+    >
   | "all";
 
 export type AppAbility = Ability<[Action, Subjects]>;
@@ -47,6 +53,16 @@ export class CaslAbilityFactory {
       );
       cannot(Action.Delete, ChampEntity).because(
         "Only admins can delete champs",
+      );
+
+      cannot(Action.Create, GroupEntity).because(
+        "Only admins can create Groups",
+      );
+      cannot(Action.Update, GroupEntity).because(
+        "Only admins can update Groups",
+      );
+      cannot(Action.Delete, GroupEntity).because(
+        "Only admins can delete Groups",
       );
     }
 
