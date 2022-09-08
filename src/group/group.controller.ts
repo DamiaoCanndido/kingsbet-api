@@ -3,7 +3,7 @@ import {
   Get,
   Post,
   Body,
-  Patch,
+  Put,
   Param,
   Delete,
 } from "@nestjs/common";
@@ -19,9 +19,9 @@ export class GroupController {
     return this.groupService.create(createGroupDto);
   }
 
-  @Get()
-  findAll() {
-    return this.groupService.findAll();
+  @Get(":champId")
+  findByChamp(@Param("champId") champId: string) {
+    return this.groupService.findByChamp(champId);
   }
 
   @Get(":id")
@@ -29,7 +29,7 @@ export class GroupController {
     return this.groupService.findOne(id);
   }
 
-  @Patch(":id")
+  @Put(":id")
   update(@Param("id") id: string, @Body() updateGroupDto: UpdateGroupDto) {
     return this.groupService.update(id, updateGroupDto);
   }
