@@ -20,6 +20,44 @@ enum ChampType {
   CUP
 }
 
+enum GroupType {
+  A
+  B
+  C
+  D
+  E
+  F
+  G
+  H
+  I
+  J
+  K
+  L
+  M
+  N
+  O
+  P
+  Q
+  R
+  S
+  T
+  U
+  V
+  W
+  X
+  Y
+  Z
+}
+
+enum RoundType {
+  Play_offs
+  Round_of_16
+  Quarter_finals
+  Semi_finals
+  Third_place
+  Final
+}
+
 model User {
   id        String   @id @default(uuid())
   createdAt DateTime @default(now())
@@ -28,6 +66,7 @@ model User {
   email     String   @unique
   hash      String
   isAdmin   Boolean  @default(false)
+  cash      Float    @default(0)
 
   @@map("users")
 }
@@ -66,12 +105,13 @@ model Champ {
 }
 
 model Group {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  name      String
+  id        String     @id @default(uuid())
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  name      GroupType?
+  order     Int        @default(autoincrement())
   champId   String
-  champ     Champ    @relation(fields: [champId], references: [id], onDelete: Cascade)
+  champ     Champ      @relation(fields: [champId], references: [id], onDelete: Cascade)
   rounds    Round[]
   games     Game[]
 
@@ -79,16 +119,17 @@ model Group {
 }
 
 model Round {
-  id          String   @id @default(uuid())
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  name        String
+  id          String     @id @default(uuid())
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  name        RoundType?
+  order       Int        @default(autoincrement())
   champId     String
-  champ       Champ    @relation(fields: [champId], references: [id], onDelete: Cascade)
+  champ       Champ      @relation(fields: [champId], references: [id], onDelete: Cascade)
   games       Game[]
   groupId     String?
-  group       Group?   @relation(fields: [groupId], references: [id], onDelete: Cascade)
-  playOffs    Boolean  @default(false)
+  group       Group?     @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  playOffs    Boolean    @default(false)
   numberGames Int
 
   @@map("rounds")
@@ -111,6 +152,7 @@ model Game {
   playOffs      Boolean  @default(false)
   homeKickScore Int?
   awayKickScore Int?
+  start         DateTime
 
   @@map("games")
 }

@@ -1,9 +1,10 @@
-import { IsNotEmpty, IsOptional, IsString } from "class-validator";
+import { IsEnum, IsNotEmpty, IsOptional, IsString } from "class-validator";
+import { GroupType } from "@prisma/client";
 
 export class CreateGroupDto {
-  @IsString()
-  @IsNotEmpty()
-  name: string;
+  @IsEnum(GroupType)
+  @IsOptional()
+  name: GroupType;
 
   @IsString()
   @IsNotEmpty()
@@ -11,7 +12,7 @@ export class CreateGroupDto {
 }
 
 export class UpdateGroupDto {
-  @IsString()
+  @IsEnum(GroupType)
   @IsOptional()
-  name: string;
+  name: GroupType;
 }
