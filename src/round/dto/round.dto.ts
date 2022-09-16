@@ -10,7 +10,7 @@ import {
 export class CreateRoundDto {
   @IsEnum(RoundType)
   @IsOptional()
-  name: string;
+  name: RoundType;
 
   @IsString()
   @IsNotEmpty()
@@ -28,7 +28,7 @@ export class CreateRoundDto {
 export class UpdateRoundDto {
   @IsEnum(RoundType)
   @IsOptional()
-  name: string;
+  name: RoundType;
 
   @IsInt()
   @IsOptional()

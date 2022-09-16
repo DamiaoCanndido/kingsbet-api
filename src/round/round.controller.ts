@@ -3,7 +3,7 @@ import {
   Get,
   Post,
   Body,
-  Patch,
+  Put,
   Param,
   Delete,
 } from "@nestjs/common";
@@ -19,17 +19,12 @@ export class RoundController {
     return this.roundService.create(createRoundDto);
   }
 
-  @Get()
-  findAll() {
-    return this.roundService.findAll();
+  @Get(":champId")
+  findByChamp(@Param("champId") champId: string) {
+    return this.roundService.findByChamp(champId);
   }
 
-  @Get(":id")
-  findOne(@Param("id") id: string) {
-    return this.roundService.findOne(id);
-  }
-
-  @Patch(":id")
+  @Put(":id")
   update(@Param("id") id: string, @Body() updateRoundDto: UpdateRoundDto) {
     return this.roundService.update(id, updateRoundDto);
   }
