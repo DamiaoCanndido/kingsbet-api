@@ -7,6 +7,7 @@ import { TeamModule } from "./team/team.module";
 import { ChampModule } from "./champ/champ.module";
 import { CaslModule } from "./casl/casl.module";
 import { GroupModule } from './group/group.module';
+import { RoundModule } from './round/round.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { GroupModule } from './group/group.module';
     ChampModule,
     CaslModule,
     GroupModule,
+    RoundModule,
   ],
   controllers: [],
   providers: [],

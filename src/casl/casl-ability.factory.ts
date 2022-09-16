@@ -10,6 +10,7 @@ import { GroupEntity } from "../group/entity";
 import { ChampEntity } from "../champ/entity";
 import { TeamEntity } from "../team/entity";
 import { UserEntity } from "../user/entity";
+import { RoundEntity } from "../round/entity";
 
 export enum Action {
   Manage = "manage",
@@ -25,6 +26,7 @@ export type Subjects =
       | typeof UserEntity
       | typeof ChampEntity
       | typeof GroupEntity
+      | typeof RoundEntity
     >
   | "all";
 
@@ -63,6 +65,16 @@ export class CaslAbilityFactory {
       );
       cannot(Action.Delete, GroupEntity).because(
         "Only admins can delete Groups",
+      );
+
+      cannot(Action.Create, RoundEntity).because(
+        "Only admins can create Rounds",
+      );
+      cannot(Action.Update, RoundEntity).because(
+        "Only admins can update Rounds",
+      );
+      cannot(Action.Delete, RoundEntity).because(
+        "Only admins can delete Rounds",
       );
     }
 
