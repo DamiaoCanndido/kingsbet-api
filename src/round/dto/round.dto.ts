@@ -17,7 +17,7 @@ export class CreateRoundDto {
   champId: string;
 
   @IsString()
-  @IsOptional()
+  @IsNotEmpty()
   groupId: string;
 
   @IsInt()

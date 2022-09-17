@@ -8,6 +8,7 @@ import { ChampModule } from "./champ/champ.module";
 import { CaslModule } from "./casl/casl.module";
 import { GroupModule } from './group/group.module';
 import { RoundModule } from './round/round.module';
+import { GameModule } from './game/game.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { RoundModule } from './round/round.module';
     CaslModule,
     GroupModule,
     RoundModule,
+    GameModule,
   ],
   controllers: [],
   providers: [],

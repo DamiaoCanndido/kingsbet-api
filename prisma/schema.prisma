@@ -99,7 +99,6 @@ model Champ {
   shieldKey String
   champType ChampType
   groups    Group[]
-  rounds    Round[]
 
   @@map("champs")
 }
@@ -109,11 +108,10 @@ model Group {
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
   name      GroupType?
-  order     Int        @default(autoincrement())
+  order     Int
   champId   String
   champ     Champ      @relation(fields: [champId], references: [id], onDelete: Cascade)
   rounds    Round[]
-  games     Game[]
 
   @@map("groups")
 }
@@ -123,12 +121,10 @@ model Round {
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
   name        RoundType?
-  order       Int        @default(autoincrement())
-  champId     String
-  champ       Champ      @relation(fields: [champId], references: [id], onDelete: Cascade)
+  order       Int
   games       Game[]
-  groupId     String?
-  group       Group?     @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  groupId     String
+  group       Group      @relation(fields: [groupId], references: [id], onDelete: Cascade)
   playOffs    Boolean    @default(false)
   numberGames Int
 
@@ -147,8 +143,6 @@ model Game {
   awayScore     Int?
   roundId       String
   round         Round    @relation(fields: [roundId], references: [id], onDelete: Cascade)
-  groupId       String?
-  group         Group?   @relation(fields: [groupId], references: [id], onDelete: Cascade)
   playOffs      Boolean  @default(false)
   homeKickScore Int?
   awayKickScore Int?
