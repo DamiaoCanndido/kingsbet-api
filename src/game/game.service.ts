@@ -12,12 +12,18 @@ export class GameService {
   }
 
   async findByRound(roundId: string) {
-    const games = await this.prisma.game.findMany({ where: { roundId } });
+    const games = await this.prisma.game.findMany({
+      where: { roundId },
+      include: { home: {}, away: {} },
+    });
     return games;
   }
 
   async findOne(id: string) {
-    const game = await this.prisma.game.findUnique({ where: { id } });
+    const game = await this.prisma.game.findUnique({
+      where: { id },
+      include: { home: {}, away: {} },
+    });
     return game;
   }
 

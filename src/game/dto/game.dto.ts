@@ -21,21 +21,17 @@ export class CreateGameDto {
   roundId: string;
 
   @IsString()
-  @IsOptional()
-  groupId: string;
-
-  @IsDate()
   @IsNotEmpty()
-  start: Date;
+  start: string;
 }
 
 export class UpdateGameDto {
   @IsInt()
-  @IsNotEmpty()
+  @IsOptional()
   homeScore: number;
 
   @IsInt()
-  @IsNotEmpty()
+  @IsOptional()
   awayScore: number;
 
   @IsInt()
@@ -51,6 +47,6 @@ export class UpdateGameDto {
   playOffs: boolean;
 
   @IsDate()
-  @IsNotEmpty()
+  @IsOptional()
   start: Date;
 }
