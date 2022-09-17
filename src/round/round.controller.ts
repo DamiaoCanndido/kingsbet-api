@@ -29,9 +29,9 @@ export class RoundController {
     return this.roundService.create(createRoundDto);
   }
 
-  @Get(":champId")
-  findByChamp(@Param("champId") champId: string) {
-    return this.roundService.findByChamp(champId);
+  @Get(":groupId")
+  findByChamp(@Param("groupId") groupId: string) {
+    return this.roundService.findByGroup(groupId);
   }
 
   @UseGuards(JwtGuard, CaslAbilityGuard)

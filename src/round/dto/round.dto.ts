@@ -12,9 +12,7 @@ export class CreateRoundDto {
   @IsOptional()
   name: RoundType;
 
-  @IsString()
-  @IsNotEmpty()
-  champId: string;
+  order: number;
 
   @IsString()
   @IsNotEmpty()

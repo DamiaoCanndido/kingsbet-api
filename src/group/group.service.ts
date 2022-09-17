@@ -7,6 +7,15 @@ export class GroupService {
   constructor(private prisma: PrismaService) {}
 
   async create(createGroupDto: CreateGroupDto) {
+    const groupCheck = await this.prisma.group.findFirst({
+      where: { champId: createGroupDto.champId },
+      orderBy: { order: "desc" },
+    });
+    if (!groupCheck) {
+      createGroupDto.order = 1;
+    } else {
+      createGroupDto.order = groupCheck.order + 1;
+    }
     const group = await this.prisma.group.create({ data: createGroupDto });
     return group;
   }

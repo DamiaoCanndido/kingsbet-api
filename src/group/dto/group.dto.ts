@@ -6,6 +6,8 @@ export class CreateGroupDto {
   @IsOptional()
   name: GroupType;
 
+  order: number;
+
   @IsString()
   @IsNotEmpty()
   champId: string;

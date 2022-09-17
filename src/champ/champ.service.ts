@@ -28,9 +28,8 @@ export class ChampService {
   async findAll() {
     const champs = await this.prisma.champ.findMany({
       include: {
-        rounds: {},
         groups: {
-          include: { games: {}, rounds: {} },
+          include: { rounds: {} },
         },
       },
     });

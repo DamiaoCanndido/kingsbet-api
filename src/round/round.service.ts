@@ -7,12 +7,21 @@ export class RoundService {
   constructor(private prisma: PrismaService) {}
 
   async create(createRoundDto: CreateRoundDto) {
+    const roundCheck = await this.prisma.round.findFirst({
+      where: { groupId: createRoundDto.groupId },
+      orderBy: { order: "desc" },
+    });
+    if (!roundCheck) {
+      createRoundDto.order = 1;
+    } else {
+      createRoundDto.order = roundCheck.order + 1;
+    }
     const round = await this.prisma.round.create({ data: createRoundDto });
     return round;
   }
 
-  async findByChamp(champId: string) {
-    const rounds = await this.prisma.round.findMany({ where: { champId } });
+  async findByGroup(groupId: string) {
+    const rounds = await this.prisma.round.findMany({ where: { groupId } });
     return rounds;
   }
 
