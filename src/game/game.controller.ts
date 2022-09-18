@@ -15,7 +15,8 @@ import { AllExceptionsFilter } from "../helpers/http-exception.filter";
 import { JwtGuard } from "../auth/guard";
 import { CaslAbilityGuard } from "../casl/guard";
 import { CheckCaslAbility } from "../casl/decorators";
-import { GameAbility } from "../casl/decorators/game-abilities/game-abilities";
+import { GenericAbilities } from "../casl/decorators/generic-abilities";
+import { GameEntity } from "./entity";
 
 @Controller("game")
 @UseFilters(AllExceptionsFilter)
@@ -23,7 +24,7 @@ export class GameController {
   constructor(private readonly gameService: GameService) {}
 
   @UseGuards(JwtGuard, CaslAbilityGuard)
-  @CheckCaslAbility(new GameAbility().createGame())
+  @CheckCaslAbility(new GenericAbilities<GameEntity>(new GameEntity()).create())
   @Post()
   create(@Body() createGameDto: CreateGameDto) {
     return this.gameService.create(createGameDto);
@@ -40,14 +41,14 @@ export class GameController {
   }
 
   @UseGuards(JwtGuard, CaslAbilityGuard)
-  @CheckCaslAbility(new GameAbility().updateGame())
+  @CheckCaslAbility(new GenericAbilities<GameEntity>(new GameEntity()).update())
   @Put(":id")
   update(@Param("id") id: string, @Body() updateGameDto: UpdateGameDto) {
     return this.gameService.update(id, updateGameDto);
   }
 
   @UseGuards(JwtGuard, CaslAbilityGuard)
-  @CheckCaslAbility(new GameAbility().deleteGame())
+  @CheckCaslAbility(new GenericAbilities<GameEntity>(new GameEntity()).delete())
   @Delete(":id")
   remove(@Param("id") id: string) {
     return this.gameService.remove(id);

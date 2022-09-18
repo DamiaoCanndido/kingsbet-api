@@ -18,8 +18,9 @@ import { CreateTeamDto, UpdateTeamDto } from "./dto";
 import { TeamService } from "./team.service";
 import { CaslAbilityGuard } from "../casl/guard";
 import { CheckCaslAbility } from "../casl/decorators";
-import { TeamAbility } from "../casl/decorators/team-abilities/team-abilities";
 import { Put } from "@nestjs/common/decorators";
+import { GenericAbilities } from "../casl/decorators/generic-abilities";
+import { TeamEntity } from "./entity";
 
 @Controller("team")
 @UseFilters(AllExceptionsFilter)
@@ -27,7 +28,7 @@ export class TeamController {
   constructor(private readonly teamService: TeamService) {}
 
   @UseGuards(JwtGuard, CaslAbilityGuard)
-  @CheckCaslAbility(new TeamAbility().createTeam())
+  @CheckCaslAbility(new GenericAbilities<TeamEntity>(new TeamEntity()).create())
   @Post()
   @UseInterceptors(FileInterceptor("shield"))
   create(
@@ -48,14 +49,14 @@ export class TeamController {
   }
 
   @UseGuards(JwtGuard, CaslAbilityGuard)
-  @CheckCaslAbility(new TeamAbility().updateTeam())
+  @CheckCaslAbility(new GenericAbilities<TeamEntity>(new TeamEntity()).update())
   @Put(":id")
   update(@Param("id") id: string, @Body() updateTeamDto: UpdateTeamDto) {
     return this.teamService.update(id, updateTeamDto);
   }
 
   @UseGuards(JwtGuard, CaslAbilityGuard)
-  @CheckCaslAbility(new TeamAbility().deleteTeam())
+  @CheckCaslAbility(new GenericAbilities<TeamEntity>(new TeamEntity()).delete())
   @Delete(":id")
   remove(@Param("id") id: string) {
     return this.teamService.remove(id);

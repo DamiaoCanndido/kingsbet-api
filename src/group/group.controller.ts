@@ -15,7 +15,8 @@ import { AllExceptionsFilter } from "../helpers/http-exception.filter";
 import { JwtGuard } from "../auth/guard";
 import { CaslAbilityGuard } from "../casl/guard";
 import { CheckCaslAbility } from "../casl/decorators";
-import { GroupAbility } from "../casl/decorators/group-abilities/group-abilities";
+import { GroupEntity } from "./entity";
+import { GenericAbilities } from "../casl/decorators/generic-abilities";
 
 @Controller("group")
 @UseFilters(AllExceptionsFilter)
@@ -23,7 +24,9 @@ export class GroupController {
   constructor(private readonly groupService: GroupService) {}
 
   @UseGuards(JwtGuard, CaslAbilityGuard)
-  @CheckCaslAbility(new GroupAbility().createGroup())
+  @CheckCaslAbility(
+    new GenericAbilities<GroupEntity>(new GroupEntity()).create(),
+  )
   @Post()
   create(@Body() createGroupDto: CreateGroupDto) {
     return this.groupService.create(createGroupDto);
@@ -35,14 +38,18 @@ export class GroupController {
   }
 
   @UseGuards(JwtGuard, CaslAbilityGuard)
-  @CheckCaslAbility(new GroupAbility().updateGroup())
+  @CheckCaslAbility(
+    new GenericAbilities<GroupEntity>(new GroupEntity()).update(),
+  )
   @Put(":id")
   update(@Param("id") id: string, @Body() updateGroupDto: UpdateGroupDto) {
     return this.groupService.update(id, updateGroupDto);
   }
 
   @UseGuards(JwtGuard, CaslAbilityGuard)
-  @CheckCaslAbility(new GroupAbility().deleteGroup())
+  @CheckCaslAbility(
+    new GenericAbilities<GroupEntity>(new GroupEntity()).delete(),
+  )
   @Delete(":id")
   remove(@Param("id") id: string) {
     return this.groupService.remove(id);
