@@ -80,6 +80,20 @@ export class CaslAbilityFactory {
       cannot(Action.Delete, RoundEntity).because(
         "Only admins can delete Rounds",
       );
+
+      cannot(Action.Create, GameEntity).because("Only admins can create Games");
+      cannot(Action.Update, GameEntity).because("Only admins can update Games");
+      cannot(Action.Delete, GameEntity).because("Only admins can delete Games");
+
+      cannot(Action.Create, LeagueEntity).because(
+        "Only admins can create Leagues",
+      );
+      cannot(Action.Update, LeagueEntity).because(
+        "Only admins can update Leagues",
+      );
+      cannot(Action.Delete, LeagueEntity).because(
+        "Only admins can delete Leagues",
+      );
     }
 
     return build({
