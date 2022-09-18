@@ -1,17 +1,19 @@
 # LEAGUE
 
 - name
-- rule
-- playersAmount (min=2, max?)
-- subscription
-- champion
+- playerAmount (min=2, max=?)
+- keysAmount (min=1, max=?)
+- phasesAmount (min=1, max=?)
+- matchesAmount
+- subscription (0)
+- champion [Player]
+- isPrivate (false)
 
-# KEY?
+# KEY
 
 - order
 - name?
 - leagueID
-- amount (min=1)
 
 # PHASE
 
@@ -19,32 +21,37 @@
 - name?
 - KeyID?
 - LeagueID
-- amount (min=1)
 - matchAmount (min=1)
 - isPlayOffs (false)
 - playerKickAmount (if playersAmount <= 1) => error
+- isAvailable (false)
 
 # MATCH
 
 - gameID
 - phaseID
-- isAvailable
+- isAvailable (false)
 
 # PLAYER
 
-- user [ ]
+- userID
 - leagueID
-- score
+- score (0)
 - isAlive (true)
 
 # PREDICT
 
 - matchID
 - playerID
+- phaseID
 - homeScore
 - awayScore
-- isAvaliable
+- isAvaliable (true)
+- isVisible (false)
+- score
 
 # TABLE
 
+- champID?
+- phaseID?
 - Players [ ]

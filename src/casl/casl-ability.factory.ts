@@ -11,7 +11,8 @@ import { ChampEntity } from "../champ/entity";
 import { TeamEntity } from "../team/entity";
 import { UserEntity } from "../user/entity";
 import { RoundEntity } from "../round/entity";
-import { GameEntity } from "src/game/entity";
+import { GameEntity } from "../game/entity";
+import { LeagueEntity } from "../league/entity";
 
 export enum Action {
   Manage = "manage",
@@ -29,6 +30,7 @@ export type Subjects =
       | typeof GroupEntity
       | typeof RoundEntity
       | typeof GameEntity
+      | typeof LeagueEntity
     >
   | "all";
 
