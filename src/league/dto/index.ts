@@ -1,1 +1,1 @@
-export * from "./create-league.dto";
+export * from "./league.dto";
