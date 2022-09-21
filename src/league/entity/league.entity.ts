@@ -5,11 +5,12 @@ export class LeagueEntity implements League {
   createdAt: Date;
   updatedAt: Date;
   name: string;
-  playerAmount: number;
+  playersAmount: number;
   playersAccepted: number;
   keysAmount: number;
   phasesAmount: number;
   matchesAmount: number;
   subscription: number;
   isPrivate: boolean;
+  start: Date;
 }

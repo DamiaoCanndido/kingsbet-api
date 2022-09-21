@@ -165,6 +165,7 @@ model League {
   matchesAmount   Int
   subscription    Float
   isPrivate       Boolean  @default(false)
+  start           DateTime
 
   @@map("leagues")
 }

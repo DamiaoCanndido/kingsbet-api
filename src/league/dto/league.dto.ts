@@ -30,6 +30,10 @@ export class CreateLeagueDto {
   @IsNumber()
   @IsNotEmpty()
   subscription: number;
+
+  @IsString()
+  @IsNotEmpty()
+  start: string;
 }
 
 export class UpdateLeagueDto {
