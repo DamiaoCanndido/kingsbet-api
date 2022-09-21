@@ -1,7 +1,8 @@
 # LEAGUE
 
 - name
-- playerAmount (min=2, max=?)
+- playersAccepted (0)
+- playersAmount (min=2, max=?)
 - keysAmount (min=1, max=?)
 - phasesAmount (min=1, max=?)
 - matchesAmount
@@ -14,28 +15,34 @@
 - order
 - name?
 - leagueID
+- playersAmount
+- Players [ ]
 
 # PHASE
 
 - order
 - name?
-- KeyID?
+- KeyID
+- Table [ ]
 - LeagueID
 - matchAmount (min=1)
+- fullMatches (0)
 - isPlayOffs (false)
-- playerKickAmount (if playersAmount <= 1) => error
-- isAvailable (false)
+- playerKickAmount (0)
+- isAvailable (true)
 
 # MATCH
 
 - gameID
+- keyID
 - phaseID
-- isAvailable (false)
+- isAvailable (true)
 
 # PLAYER
 
 - userID
 - leagueID
+- keyID
 - score (0)
 - isAlive (true)
 
@@ -50,8 +57,10 @@
 - isVisible (false)
 - score
 
+`Checar se o player está na liga`
+
 # TABLE
 
-- champID?
-- phaseID?
+- leagueID?
+- phaseID
 - Players [ ]

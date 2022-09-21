@@ -154,16 +154,17 @@ model Game {
 //------------------------------------------------------ \\
 
 model League {
-  id            String   @id @default(uuid())
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  name          String
-  playerAmount  Int
-  keysAmount    Int
-  phasesAmount  Int
-  matchesAmount Int
-  subscription  Float
-  isPrivate     Boolean  @default(false)
+  id              String   @id @default(uuid())
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  name            String
+  playersAmount   Int
+  playersAccepted Int      @default(0)
+  keysAmount      Int
+  phasesAmount    Int
+  matchesAmount   Int
+  subscription    Float
+  isPrivate       Boolean  @default(false)
 
   @@map("leagues")
 }

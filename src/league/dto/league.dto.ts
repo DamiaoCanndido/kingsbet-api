@@ -1,4 +1,10 @@
-import { IsInt, IsNotEmpty, IsNumber, IsString } from "class-validator";
+import {
+  IsInt,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from "class-validator";
 
 export class CreateLeagueDto {
   @IsString()
@@ -7,7 +13,7 @@ export class CreateLeagueDto {
 
   @IsInt()
   @IsNotEmpty()
-  playerAmount: number;
+  playersAmount: number;
 
   @IsInt()
   @IsNotEmpty()
@@ -28,6 +34,10 @@ export class CreateLeagueDto {
 
 export class UpdateLeagueDto {
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   name: string;
+
+  @IsString()
+  @IsOptional()
+  playersAccepted: number;
 }
