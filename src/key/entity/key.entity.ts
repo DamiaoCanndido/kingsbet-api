@@ -1,6 +1,6 @@
-import { Key } from "@prisma/client";
+import { Keying } from "@prisma/client";
 
-export class KeyEntity implements Key {
+export class KeyEntity implements Keying {
   id: string;
   createdAt: Date;
   updatedAt: Date;

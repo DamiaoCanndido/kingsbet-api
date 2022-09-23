@@ -12,6 +12,8 @@ export class CreateRoundDto {
   @IsOptional()
   name: RoundType;
 
+  @IsOptional()
+  @IsInt()
   order: number;
 
   @IsString()
