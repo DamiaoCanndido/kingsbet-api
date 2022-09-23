@@ -169,3 +169,19 @@ model League {
 
   @@map("leagues")
 }
+
+model Key {
+  id               String   @id @default(uuid())
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  order            Int
+  name             String?
+  leagueId         String
+  playersAmount    Int
+  finishedPhases   Int      @default(0)
+  phasesAmount     Int
+  isPlayOffs       Boolean  @default(false)
+  playerKickAmount Int      @default(0)
+
+  @@map("keys")
+}

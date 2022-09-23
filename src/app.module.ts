@@ -10,6 +10,7 @@ import { GroupModule } from './group/group.module';
 import { RoundModule } from './round/round.module';
 import { GameModule } from './game/game.module';
 import { LeagueModule } from './league/league.module';
+import { KeyModule } from './key/key.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { LeagueModule } from './league/league.module';
     RoundModule,
     GameModule,
     LeagueModule,
+    KeyModule,
   ],
   controllers: [],
   providers: [],

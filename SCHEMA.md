@@ -16,7 +16,13 @@
 - name?
 - leagueID
 - playersAmount
+- finishedPhases (0)
+- phasesAmount
 - Players [ ]
+- playerKickAmount (1)
+- isPlayOffs (true)
+
+`Os classificados serão setados para novas chaves`
 
 # PHASE
 
@@ -27,9 +33,7 @@
 - LeagueID
 - matchAmount (min=1)
 - fullMatches (0)
-- isPlayOffs (false)
-- playerKickAmount (0)
-- isAvailable (true)
+- isAvailable (false)
 
 # MATCH
 
@@ -42,7 +46,7 @@
 
 - userID
 - leagueID
-- keyID
+- keyID => `Quando o chaveamento acabar será setado uma nova chave`
 - score (0)
 - isAlive (true)
 
