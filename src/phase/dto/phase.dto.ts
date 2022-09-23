@@ -6,7 +6,7 @@ import {
   IsString,
 } from "class-validator";
 
-export class CreateKeyDto {
+export class CreatePhaseDto {
   @IsOptional()
   @IsInt()
   order: number;
@@ -21,11 +21,11 @@ export class CreateKeyDto {
 
   @IsInt()
   @IsNotEmpty()
-  playersAmount: number;
+  matchesAmount: number;
 
+  @IsOptional()
   @IsInt()
-  @IsNotEmpty()
-  phasesAmount: number;
+  fullMatches: number;
 
   @IsOptional()
   @IsBoolean()
@@ -34,16 +34,20 @@ export class CreateKeyDto {
   @IsOptional()
   @IsInt()
   playerKickAmount: number;
+
+  @IsOptional()
+  @IsBoolean()
+  isAvailable: boolean;
 }
 
-export class UpdateKeyDto {
+export class UpdatePhaseDto {
   @IsString()
   @IsOptional()
   name: string;
 
   @IsInt()
   @IsOptional()
-  finishedPhases: number;
+  fullMatches: number;
 
   @IsBoolean()
   @IsOptional()

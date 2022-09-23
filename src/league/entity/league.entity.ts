@@ -7,7 +7,6 @@ export class LeagueEntity implements League {
   name: string;
   playersAmount: number;
   playersAccepted: number;
-  keysAmount: number;
   phasesAmount: number;
   matchesAmount: number;
   subscription: number;

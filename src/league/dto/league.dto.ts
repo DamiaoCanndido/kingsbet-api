@@ -17,10 +17,6 @@ export class CreateLeagueDto {
 
   @IsInt()
   @IsNotEmpty()
-  keysAmount: number;
-
-  @IsInt()
-  @IsNotEmpty()
   phasesAmount: number;
 
   @IsInt()

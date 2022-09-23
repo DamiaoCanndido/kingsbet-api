@@ -13,7 +13,7 @@ import { UserEntity } from "../user/entity";
 import { RoundEntity } from "../round/entity";
 import { GameEntity } from "../game/entity";
 import { LeagueEntity } from "../league/entity";
-import { KeyEntity } from "../key/entity";
+import { PhaseEntity } from "../phase/entity";
 
 export enum Action {
   Manage = "manage",
@@ -32,7 +32,7 @@ export type Subjects =
       | typeof RoundEntity
       | typeof GameEntity
       | typeof LeagueEntity
-      | typeof KeyEntity
+      | typeof PhaseEntity
     >
   | "all";
 
@@ -97,9 +97,15 @@ export class CaslAbilityFactory {
         "Only admins can delete Leagues",
       );
 
-      cannot(Action.Create, KeyEntity).because("Only admins can create Keys");
-      cannot(Action.Update, KeyEntity).because("Only admins can update Keys");
-      cannot(Action.Delete, KeyEntity).because("Only admins can delete Keys");
+      cannot(Action.Create, PhaseEntity).because(
+        "Only admins can create Phases",
+      );
+      cannot(Action.Update, PhaseEntity).because(
+        "Only admins can update Phases",
+      );
+      cannot(Action.Delete, PhaseEntity).because(
+        "Only admins can delete Phases",
+      );
     }
 
     return build({

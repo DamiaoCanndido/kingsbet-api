@@ -6,11 +6,11 @@ import { ConfigModule } from "@nestjs/config";
 import { TeamModule } from "./team/team.module";
 import { ChampModule } from "./champ/champ.module";
 import { CaslModule } from "./casl/casl.module";
-import { GroupModule } from './group/group.module';
-import { RoundModule } from './round/round.module';
-import { GameModule } from './game/game.module';
-import { LeagueModule } from './league/league.module';
-import { KeyModule } from './key/key.module';
+import { GroupModule } from "./group/group.module";
+import { RoundModule } from "./round/round.module";
+import { GameModule } from "./game/game.module";
+import { LeagueModule } from "./league/league.module";
+import { PhaseModule } from "./phase/phase.module";
 
 @Module({
   imports: [
@@ -27,7 +27,7 @@ import { KeyModule } from './key/key.module';
     RoundModule,
     GameModule,
     LeagueModule,
-    KeyModule,
+    PhaseModule,
   ],
   controllers: [],
   providers: [],

@@ -28,19 +28,19 @@
 
 - order
 - name?
-- KeyID
-- Table [ ]
-- LeagueID
+- leagueID
 - matchAmount (min=1)
 - fullMatches (0)
 - isAvailable (false)
+- isPlayOffs (false)
+- playerKickAmount (0)
 
 # MATCH
 
 - gameID
-- keyID
 - phaseID
 - isAvailable (true)
+- isValid (true)
 
 # PLAYER
 

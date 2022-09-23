@@ -160,7 +160,6 @@ model League {
   name            String
   playersAmount   Int
   playersAccepted Int      @default(0)
-  keysAmount      Int
   phasesAmount    Int
   matchesAmount   Int
   subscription    Float
@@ -170,18 +169,18 @@ model League {
   @@map("leagues")
 }
 
-model Keying {
+model Phase {
   id               String   @id @default(uuid())
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
   order            Int
   name             String?
   leagueId         String
-  playersAmount    Int
-  finishedPhases   Int      @default(0)
-  phasesAmount     Int
+  matchesAmount    Int
+  fullMatches      Int      @default(0)
   isPlayOffs       Boolean  @default(false)
   playerKickAmount Int      @default(0)
+  isAvailable      Boolean  @default(false)
 
-  @@map("keyings")
+  @@map("phases")
 }
