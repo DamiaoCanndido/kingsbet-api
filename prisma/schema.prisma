@@ -180,7 +180,7 @@ model Phase {
   fullMatches      Int      @default(0)
   isPlayOffs       Boolean  @default(false)
   playerKickAmount Int      @default(0)
-  isAvailable      Boolean  @default(false)
+  isAvailable      Boolean  @default(true)
 
   @@map("phases")
 }

@@ -3,7 +3,7 @@ import {
   Get,
   Post,
   Body,
-  Patch,
+  Put,
   Param,
   Delete,
   UseFilters,
@@ -19,7 +19,7 @@ import { CaslAbilityGuard } from "../casl/guard";
 import { CheckCaslAbility } from "../casl/decorators";
 
 @Controller("phase")
-//@UseFilters(AllExceptionsFilter)
+@UseFilters(AllExceptionsFilter)
 export class PhaseController {
   constructor(private readonly phaseService: PhaseService) {}
 
@@ -46,7 +46,7 @@ export class PhaseController {
   @CheckCaslAbility(
     new GenericAbilities<PhaseEntity>(new PhaseEntity()).update(),
   )
-  @Patch(":id")
+  @Put(":id")
   update(@Param("id") id: string, @Body() updatePhaseDto: UpdatePhaseDto) {
     return this.phaseService.update(id, updatePhaseDto);
   }

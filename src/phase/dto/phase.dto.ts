@@ -56,4 +56,8 @@ export class UpdatePhaseDto {
   @IsInt()
   @IsOptional()
   playerKickAmount: number;
+
+  @IsOptional()
+  @IsBoolean()
+  isAvailable: boolean;
 }
