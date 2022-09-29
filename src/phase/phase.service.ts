@@ -39,6 +39,7 @@ export class PhaseService {
   async findByLeague(leagueId: string) {
     const phases = await this.prisma.phase.findMany({
       where: { leagueId, isAvailable: true },
+      orderBy: { order: "desc" },
     });
     return phases;
   }

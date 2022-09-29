@@ -99,6 +99,7 @@ model Champ {
   shieldKey String
   champType ChampType
   groups    Group[]
+  Game      Game[]
 
   @@map("champs")
 }
@@ -112,6 +113,7 @@ model Group {
   champId   String
   champ     Champ      @relation(fields: [champId], references: [id], onDelete: Cascade)
   rounds    Round[]
+  games     Game[]
 
   @@map("groups")
 }
@@ -141,12 +143,16 @@ model Game {
   awayId        String
   away          Team     @relation(name: "away", fields: [awayId], references: [id])
   awayScore     Int?
-  roundId       String
-  round         Round    @relation(fields: [roundId], references: [id], onDelete: Cascade)
+  roundId       String?
+  round         Round?   @relation(fields: [roundId], references: [id], onDelete: Cascade)
+  champId       String?
+  champ         Champ?   @relation(fields: [champId], references: [id], onDelete: Cascade)
   playOffs      Boolean  @default(false)
   homeKickScore Int?
   awayKickScore Int?
   start         DateTime
+  Group         Group?   @relation(fields: [groupId], references: [id])
+  groupId       String?
 
   @@map("games")
 }
