@@ -1,6 +1,7 @@
 import { Game } from "@prisma/client";
 
 export class GameEntity implements Game {
+  champId: string;
   id: string;
   createdAt: Date;
   updatedAt: Date;

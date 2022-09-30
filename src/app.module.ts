@@ -11,6 +11,7 @@ import { RoundModule } from "./round/round.module";
 import { GameModule } from "./game/game.module";
 import { LeagueModule } from "./league/league.module";
 import { PhaseModule } from "./phase/phase.module";
+import { MatchModule } from './match/match.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { PhaseModule } from "./phase/phase.module";
     GameModule,
     LeagueModule,
     PhaseModule,
+    MatchModule,
   ],
   controllers: [],
   providers: [],

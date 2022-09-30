@@ -54,10 +54,8 @@
 
 - matchID
 - playerID
-- phaseID
 - homeScore
 - awayScore
-- isAvaliable (true)
 - isVisible (false)
 - score
 
