@@ -10,8 +10,6 @@ import { GroupModule } from "./group/group.module";
 import { RoundModule } from "./round/round.module";
 import { GameModule } from "./game/game.module";
 import { LeagueModule } from "./league/league.module";
-import { PhaseModule } from "./phase/phase.module";
-import { MatchModule } from './match/match.module';
 
 @Module({
   imports: [
@@ -28,8 +26,6 @@ import { MatchModule } from './match/match.module';
     RoundModule,
     GameModule,
     LeagueModule,
-    PhaseModule,
-    MatchModule,
   ],
   controllers: [],
   providers: [],

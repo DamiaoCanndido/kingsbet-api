@@ -17,10 +17,6 @@ export class CreateLeagueDto {
 
   @IsInt()
   @IsNotEmpty()
-  phasesAmount: number;
-
-  @IsInt()
-  @IsNotEmpty()
   matchesAmount: number;
 
   @IsNumber()
@@ -40,4 +36,14 @@ export class UpdateLeagueDto {
   @IsString()
   @IsOptional()
   playersAccepted: number;
+}
+
+export class createGamesOnLeagues {
+  @IsString()
+  @IsNotEmpty()
+  leagueId: string;
+
+  @IsString()
+  @IsNotEmpty()
+  gameId: string;
 }

@@ -30,9 +30,9 @@ export class GameController {
     return this.gameService.create(createGameDto);
   }
 
-  @Get(":roundId/round")
-  findByRound(@Param("roundId") roundId: string) {
-    return this.gameService.findByRound(roundId);
+  @Get(":leagueId/league")
+  findByLeague(@Param("leagueId") leagueId: string) {
+    return this.gameService.findByLeague(leagueId);
   }
 
   @Get(":id")

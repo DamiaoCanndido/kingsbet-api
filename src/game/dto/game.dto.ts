@@ -22,6 +22,10 @@ export class CreateGameDto {
 
   @IsString()
   @IsNotEmpty()
+  champId: string;
+
+  @IsString()
+  @IsNotEmpty()
   start: string;
 }
 
@@ -49,4 +53,8 @@ export class UpdateGameDto {
   @IsDate()
   @IsOptional()
   start: Date;
+
+  @IsString()
+  @IsOptional()
+  champId: string;
 }

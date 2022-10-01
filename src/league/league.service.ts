@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { PrismaService } from "../prisma/prisma.service";
-import { CreateLeagueDto, UpdateLeagueDto } from "./dto";
+import { createGamesOnLeagues, CreateLeagueDto, UpdateLeagueDto } from "./dto";
 
 @Injectable()
 export class LeagueService {
@@ -11,9 +11,43 @@ export class LeagueService {
     return league;
   }
 
+  async createGamesOnLeagues(createGamesOnLeagues: createGamesOnLeagues) {
+    const gamesOnLeagues = await this.prisma.gamesOnLeagues.create({
+      data: {
+        game: {
+          connect: {
+            id: createGamesOnLeagues.gameId,
+          },
+        },
+        league: {
+          connect: {
+            id: createGamesOnLeagues.leagueId,
+          },
+        },
+      },
+    });
+    return gamesOnLeagues;
+  }
+
   async findAll() {
-    const leagues = await this.prisma.league.findMany();
+    const leagues = await this.prisma.league.findMany({
+      include: {
+        gamesOnLeagues: {
+          select: {
+            game: true,
+          },
+        },
+      },
+    });
     return leagues;
+  }
+
+  async findGamesFromLeague(leagueId: string) {
+    const games = await this.prisma.gamesOnLeagues.findMany({
+      where: { leagueId },
+      select: { game: true },
+    });
+    return games;
   }
 
   async findOne(id: string) {

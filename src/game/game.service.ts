@@ -11,10 +11,16 @@ export class GameService {
     return game;
   }
 
-  async findByRound(roundId: string) {
+  async findByLeague(leagueId: string) {
     const games = await this.prisma.game.findMany({
-      where: { roundId },
-      include: { home: {}, away: {} },
+      where: {
+        gamesOnLeagues: {
+          some: {
+            leagueId,
+          },
+        },
+      },
+      include: { home: true, away: true },
     });
     return games;
   }

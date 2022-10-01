@@ -134,26 +134,26 @@ model Round {
 }
 
 model Game {
-  id            String   @id @default(uuid())
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  homeId        String
-  home          Team     @relation(name: "home", fields: [homeId], references: [id])
-  homeScore     Int?
-  awayId        String
-  away          Team     @relation(name: "away", fields: [awayId], references: [id])
-  awayScore     Int?
-  roundId       String?
-  round         Round?   @relation(fields: [roundId], references: [id], onDelete: Cascade)
-  champId       String?
-  champ         Champ?   @relation(fields: [champId], references: [id], onDelete: Cascade)
-  playOffs      Boolean  @default(false)
-  homeKickScore Int?
-  awayKickScore Int?
-  start         DateTime
-  Group         Group?   @relation(fields: [groupId], references: [id])
-  groupId       String?
-  Match         Match[]
+  id             String           @id @default(uuid())
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  homeId         String
+  home           Team             @relation(name: "home", fields: [homeId], references: [id])
+  homeScore      Int?
+  awayId         String
+  away           Team             @relation(name: "away", fields: [awayId], references: [id])
+  awayScore      Int?
+  roundId        String?
+  round          Round?           @relation(fields: [roundId], references: [id], onDelete: Cascade)
+  champId        String?
+  champ          Champ?           @relation(fields: [champId], references: [id], onDelete: Cascade)
+  playOffs       Boolean          @default(false)
+  homeKickScore  Int?
+  awayKickScore  Int?
+  start          DateTime
+  Group          Group?           @relation(fields: [groupId], references: [id])
+  groupId        String?
+  gamesOnLeagues GamesOnLeagues[]
 
   @@map("games")
 }
@@ -161,47 +161,27 @@ model Game {
 //------------------------------------------------------ \\
 
 model League {
-  id              String   @id @default(uuid())
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  id              String           @id @default(uuid())
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
   name            String
   playersAmount   Int
-  playersAccepted Int      @default(0)
-  phasesAmount    Int
+  playersAccepted Int              @default(0)
   matchesAmount   Int
   subscription    Float
-  isPrivate       Boolean  @default(false)
+  isPrivate       Boolean          @default(false)
   start           DateTime
+  gamesOnLeagues  GamesOnLeagues[]
 
   @@map("leagues")
 }
 
-model Phase {
-  id               String   @id @default(uuid())
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
-  order            Int
-  name             String?
-  leagueId         String
-  matchesAmount    Int
-  fullMatches      Int      @default(0)
-  isPlayOffs       Boolean  @default(false)
-  playerKickAmount Int      @default(0)
-  isAvailable      Boolean  @default(true)
-  Match            Match[]
+model GamesOnLeagues {
+  game     Game   @relation(fields: [gameId], references: [id])
+  gameId   String
+  league   League @relation(fields: [leagueId], references: [id])
+  leagueId String
 
-  @@map("phases")
-}
-
-model Match {
-  id          String   @id @default(uuid())
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  gameId      String
-  game        Game     @relation(fields: [gameId], references: [id])
-  phaseId     String
-  phase       Phase    @relation(fields: [phaseId], references: [id])
-  isAvailable Boolean  @default(true)
-
-  @@map("matches")
+  @@id([gameId, leagueId])
+  @@map("gamesOnLeagues")
 }
