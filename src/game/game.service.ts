@@ -20,7 +20,7 @@ export class GameService {
           },
         },
       },
-      include: { home: true, away: true },
+      include: { home: true, away: true, champ: true },
     });
     return games;
   }

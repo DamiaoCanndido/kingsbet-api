@@ -67,6 +67,7 @@ model User {
   hash      String
   isAdmin   Boolean  @default(false)
   cash      Float    @default(0)
+  Player    Player[]
 
   @@map("users")
 }
@@ -172,6 +173,7 @@ model League {
   isPrivate       Boolean          @default(false)
   start           DateTime
   gamesOnLeagues  GamesOnLeagues[]
+  Player          Player[]
 
   @@map("leagues")
 }
@@ -184,4 +186,16 @@ model GamesOnLeagues {
 
   @@id([gameId, leagueId])
   @@map("gamesOnLeagues")
+}
+
+model Player {
+  userId   String
+  user     User    @relation(fields: [userId], references: [id])
+  leagueId String
+  league   League  @relation(fields: [leagueId], references: [id])
+  score    Int     @default(0)
+  isAlive  Boolean @default(true)
+
+  @@id([userId, leagueId])
+  @@map("players")
 }
