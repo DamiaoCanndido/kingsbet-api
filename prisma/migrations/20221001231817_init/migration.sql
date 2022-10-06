@@ -89,11 +89,13 @@ CREATE TABLE "games" (
     "homeScore" INTEGER,
     "awayId" TEXT NOT NULL,
     "awayScore" INTEGER,
-    "roundId" TEXT NOT NULL,
+    "roundId" TEXT,
+    "champId" TEXT,
     "playOffs" BOOLEAN NOT NULL DEFAULT false,
     "homeKickScore" INTEGER,
     "awayKickScore" INTEGER,
     "start" TIMESTAMP(3) NOT NULL,
+    "groupId" TEXT,
 
     CONSTRAINT "games_pkey" PRIMARY KEY ("id")
 );
@@ -106,8 +108,6 @@ CREATE TABLE "leagues" (
     "name" TEXT NOT NULL,
     "playersAmount" INTEGER NOT NULL,
     "playersAccepted" INTEGER NOT NULL DEFAULT 0,
-    "keysAmount" INTEGER NOT NULL,
-    "phasesAmount" INTEGER NOT NULL,
     "matchesAmount" INTEGER NOT NULL,
     "subscription" DOUBLE PRECISION NOT NULL,
     "isPrivate" BOOLEAN NOT NULL DEFAULT false,
@@ -117,20 +117,27 @@ CREATE TABLE "leagues" (
 );
 
 -- CreateTable
-CREATE TABLE "keys" (
+CREATE TABLE "gamesOnLeagues" (
     "id" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
-    "order" INTEGER NOT NULL,
-    "name" TEXT,
+    "gameId" TEXT NOT NULL,
     "leagueId" TEXT NOT NULL,
-    "playersAmount" INTEGER NOT NULL,
-    "finishedPhases" INTEGER NOT NULL DEFAULT 0,
-    "phasesAmount" INTEGER NOT NULL,
-    "isPlayOffs" BOOLEAN NOT NULL DEFAULT false,
-    "playerKickAmount" INTEGER NOT NULL DEFAULT 0,
 
-    CONSTRAINT "keys_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "gamesOnLeagues_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "players" (
+    "id" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "userId" TEXT NOT NULL,
+    "leagueId" TEXT NOT NULL,
+    "score" INTEGER NOT NULL DEFAULT 0,
+    "isAlive" BOOLEAN NOT NULL DEFAULT true,
+
+    CONSTRAINT "players_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -144,6 +151,12 @@ CREATE UNIQUE INDEX "teams_name_key" ON "teams"("name");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "champs_name_key" ON "champs"("name");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "gamesOnLeagues_gameId_leagueId_key" ON "gamesOnLeagues"("gameId", "leagueId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "players_leagueId_userId_key" ON "players"("leagueId", "userId");
 
 -- AddForeignKey
 ALTER TABLE "groups" ADD CONSTRAINT "groups_champId_fkey" FOREIGN KEY ("champId") REFERENCES "champs"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -159,3 +172,21 @@ ALTER TABLE "games" ADD CONSTRAINT "games_awayId_fkey" FOREIGN KEY ("awayId") RE
 
 -- AddForeignKey
 ALTER TABLE "games" ADD CONSTRAINT "games_roundId_fkey" FOREIGN KEY ("roundId") REFERENCES "rounds"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "games" ADD CONSTRAINT "games_champId_fkey" FOREIGN KEY ("champId") REFERENCES "champs"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "games" ADD CONSTRAINT "games_groupId_fkey" FOREIGN KEY ("groupId") REFERENCES "groups"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "gamesOnLeagues" ADD CONSTRAINT "gamesOnLeagues_gameId_fkey" FOREIGN KEY ("gameId") REFERENCES "games"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "gamesOnLeagues" ADD CONSTRAINT "gamesOnLeagues_leagueId_fkey" FOREIGN KEY ("leagueId") REFERENCES "leagues"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "players" ADD CONSTRAINT "players_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "players" ADD CONSTRAINT "players_leagueId_fkey" FOREIGN KEY ("leagueId") REFERENCES "leagues"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

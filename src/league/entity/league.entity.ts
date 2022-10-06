@@ -1,4 +1,4 @@
-import { GamesOnLeagues, League } from "@prisma/client";
+import { Match, League } from "@prisma/client";
 
 export class LeagueEntity implements League {
   id: string;
@@ -13,7 +13,10 @@ export class LeagueEntity implements League {
   start: Date;
 }
 
-export class gamesOnLeaguesEntity implements GamesOnLeagues {
+export class MatchEntity implements Match {
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
   gameId: string;
   leagueId: string;
 }

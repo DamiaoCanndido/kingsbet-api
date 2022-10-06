@@ -12,7 +12,7 @@ import { TeamEntity } from "../team/entity";
 import { UserEntity } from "../user/entity";
 import { RoundEntity } from "../round/entity";
 import { GameEntity } from "../game/entity";
-import { gamesOnLeaguesEntity, LeagueEntity } from "../league/entity";
+import { MatchEntity, LeagueEntity } from "../league/entity";
 
 export enum Action {
   Manage = "manage",
@@ -31,7 +31,7 @@ export type Subjects =
       | typeof RoundEntity
       | typeof GameEntity
       | typeof LeagueEntity
-      | typeof gamesOnLeaguesEntity
+      | typeof MatchEntity
     >
   | "all";
 
@@ -96,7 +96,7 @@ export class CaslAbilityFactory {
         "Only admins can delete Leagues",
       );
 
-      cannot(Action.Create, gamesOnLeaguesEntity).because(
+      cannot(Action.Create, MatchEntity).because(
         "Only admins can create games on leagues",
       );
     }

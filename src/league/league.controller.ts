@@ -10,13 +10,13 @@ import {
   UseGuards,
 } from "@nestjs/common";
 import { LeagueService } from "./league.service";
-import { createGamesOnLeagues, CreateLeagueDto, UpdateLeagueDto } from "./dto";
+import { CreateMatch, CreateLeagueDto, UpdateLeagueDto } from "./dto";
 import { AllExceptionsFilter } from "../helpers/http-exception.filter";
 import { JwtGuard } from "../auth/guard";
 import { CaslAbilityGuard } from "../casl/guard";
 import { CheckCaslAbility } from "../casl/decorators";
 import { GenericAbilities } from "../casl/decorators/generic-abilities";
-import { gamesOnLeaguesEntity, LeagueEntity } from "./entity";
+import { MatchEntity, LeagueEntity } from "./entity";
 
 @Controller("league")
 @UseFilters(AllExceptionsFilter)
@@ -32,9 +32,13 @@ export class LeagueController {
     return this.leagueService.create(createLeagueDto);
   }
 
+  @UseGuards(JwtGuard, CaslAbilityGuard)
+  @CheckCaslAbility(
+    new GenericAbilities<MatchEntity>(new MatchEntity()).create(),
+  )
   @Post("game")
-  createGamesOnLeagues(@Body() createGamesOnLeagues: createGamesOnLeagues) {
-    return this.leagueService.createGamesOnLeagues(createGamesOnLeagues);
+  createGamesOnLeagues(@Body() createMatch: CreateMatch) {
+    return this.leagueService.createMatches(createMatch);
   }
 
   @Get()

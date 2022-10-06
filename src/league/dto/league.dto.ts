@@ -38,7 +38,7 @@ export class UpdateLeagueDto {
   playersAccepted: number;
 }
 
-export class createGamesOnLeagues {
+export class CreateMatch {
   @IsString()
   @IsNotEmpty()
   leagueId: string;

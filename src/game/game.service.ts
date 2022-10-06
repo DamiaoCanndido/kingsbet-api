@@ -14,7 +14,7 @@ export class GameService {
   async findByLeague(leagueId: string) {
     const games = await this.prisma.game.findMany({
       where: {
-        gamesOnLeagues: {
+        match: {
           some: {
             leagueId,
           },
