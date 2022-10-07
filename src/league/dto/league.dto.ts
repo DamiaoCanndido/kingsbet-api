@@ -47,3 +47,29 @@ export class CreateMatch {
   @IsNotEmpty()
   gameId: string;
 }
+
+export class CreatePlayer {
+  userId: string;
+
+  @IsString()
+  @IsNotEmpty()
+  leagueId: string;
+}
+
+export class CreatePredict {
+  @IsString()
+  @IsNotEmpty()
+  matchId: string;
+
+  @IsString()
+  @IsNotEmpty()
+  playerId: string;
+
+  @IsInt()
+  @IsNotEmpty()
+  homePredict: number;
+
+  @IsInt()
+  @IsNotEmpty()
+  awayPredict: number;
+}

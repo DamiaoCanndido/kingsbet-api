@@ -1,6 +1,11 @@
 import { Injectable } from "@nestjs/common";
 import { PrismaService } from "../prisma/prisma.service";
-import { CreateMatch, CreateLeagueDto, UpdateLeagueDto } from "./dto";
+import {
+  CreateMatch,
+  CreateLeagueDto,
+  UpdateLeagueDto,
+  CreatePlayer,
+} from "./dto";
 
 @Injectable()
 export class LeagueService {
@@ -16,6 +21,16 @@ export class LeagueService {
       data: createMatch,
     });
     return matches;
+  }
+
+  async createPlayers(createPlayer: CreatePlayer, userId: string) {
+    const player = await this.prisma.player.create({
+      data: {
+        leagueId: createPlayer.leagueId,
+        userId,
+      },
+    });
+    return player;
   }
 
   async findAll() {

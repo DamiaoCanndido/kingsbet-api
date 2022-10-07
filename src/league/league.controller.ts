@@ -8,15 +8,23 @@ import {
   Delete,
   UseFilters,
   UseGuards,
+  Req,
 } from "@nestjs/common";
+import { User } from "@prisma/client";
 import { LeagueService } from "./league.service";
-import { CreateMatch, CreateLeagueDto, UpdateLeagueDto } from "./dto";
+import {
+  CreateMatch,
+  CreateLeagueDto,
+  UpdateLeagueDto,
+  CreatePlayer,
+} from "./dto";
 import { AllExceptionsFilter } from "../helpers/http-exception.filter";
 import { JwtGuard } from "../auth/guard";
 import { CaslAbilityGuard } from "../casl/guard";
 import { CheckCaslAbility } from "../casl/decorators";
 import { GenericAbilities } from "../casl/decorators/generic-abilities";
 import { MatchEntity, LeagueEntity } from "./entity";
+import { GetUser } from "../auth/decorators";
 
 @Controller("league")
 @UseFilters(AllExceptionsFilter)
@@ -37,8 +45,15 @@ export class LeagueController {
     new GenericAbilities<MatchEntity>(new MatchEntity()).create(),
   )
   @Post("game")
-  createGamesOnLeagues(@Body() createMatch: CreateMatch) {
+  createMatches(@Body() createMatch: CreateMatch) {
     return this.leagueService.createMatches(createMatch);
+  }
+
+  @UseGuards(JwtGuard, CaslAbilityGuard)
+  @Post("player")
+  createPlayer(@Body() createPlayer: CreatePlayer, @GetUser() user: User) {
+    console.log(user.id);
+    return this.leagueService.createPlayers(createPlayer, user.id);
   }
 
   @Get()

@@ -12,7 +12,12 @@ import { TeamEntity } from "../team/entity";
 import { UserEntity } from "../user/entity";
 import { RoundEntity } from "../round/entity";
 import { GameEntity } from "../game/entity";
-import { MatchEntity, LeagueEntity } from "../league/entity";
+import {
+  MatchEntity,
+  LeagueEntity,
+  PlayerEntity,
+  PredictEntity,
+} from "../league/entity";
 
 export enum Action {
   Manage = "manage",
@@ -32,6 +37,8 @@ export type Subjects =
       | typeof GameEntity
       | typeof LeagueEntity
       | typeof MatchEntity
+      | typeof PlayerEntity
+      | typeof PredictEntity
     >
   | "all";
 
@@ -99,10 +106,16 @@ export class CaslAbilityFactory {
       cannot(Action.Create, MatchEntity).because(
         "Only admins can create games on leagues",
       );
+
+      cannot(Action.Update, PlayerEntity).because(
+        "Only admins can update games on players",
+      );
+      cannot(Action.Delete, PlayerEntity).because(
+        "Only admins can delete games on players",
+      );
     }
 
     return build({
-      // Read https://casl.js.org/v5/en/guide/subject-type-detection#use-classes-as-subject-types for details
       detectSubjectType: (item) =>
         item.constructor as ExtractSubjectType<Subjects>,
     });

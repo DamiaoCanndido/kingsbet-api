@@ -1,4 +1,4 @@
-import { Match, League } from "@prisma/client";
+import { Match, League, Player, Predict } from "@prisma/client";
 
 export class LeagueEntity implements League {
   id: string;
@@ -19,4 +19,24 @@ export class MatchEntity implements Match {
   updatedAt: Date;
   gameId: string;
   leagueId: string;
+}
+
+export class PlayerEntity implements Player {
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  userId: string;
+  leagueId: string;
+  score: number;
+  isAlive: boolean;
+}
+
+export class PredictEntity implements Predict {
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  matchId: string;
+  playerId: string;
+  homePredict: number;
+  awayPredict: number;
 }
