@@ -13,10 +13,11 @@ import {
 import { User } from "@prisma/client";
 import { LeagueService } from "./league.service";
 import {
-  CreateMatch,
+  CreateMatchDto,
   CreateLeagueDto,
   UpdateLeagueDto,
-  CreatePlayer,
+  CreatePlayerDto,
+  CreatePredictDto,
 } from "./dto";
 import { AllExceptionsFilter } from "../helpers/http-exception.filter";
 import { JwtGuard } from "../auth/guard";
@@ -44,15 +45,28 @@ export class LeagueController {
   @CheckCaslAbility(
     new GenericAbilities<MatchEntity>(new MatchEntity()).create(),
   )
-  @Post("game")
-  createMatches(@Body() createMatch: CreateMatch) {
-    return this.leagueService.createMatches(createMatch);
+  @Post(":leagueId/match")
+  createMatches(
+    @Param("leagueId") leagueId: string,
+    @Body() createMatchDto: CreateMatchDto,
+  ) {
+    return this.leagueService.createMatches(leagueId, createMatchDto);
   }
 
   @UseGuards(JwtGuard, CaslAbilityGuard)
-  @Post("player")
-  createPlayer(@Body() createPlayer: CreatePlayer, @GetUser() user: User) {
-    return this.leagueService.createPlayers(createPlayer, user);
+  @Post(":leagueId/player")
+  createPlayer(@Param("leagueId") leagueId: string, @GetUser() user: User) {
+    return this.leagueService.createPlayers(leagueId, user);
+  }
+
+  @UseGuards(JwtGuard, CaslAbilityGuard)
+  @Post(":leagueId/predict")
+  createPredict(
+    @Param("leagueId") leagueId: string,
+    @Body() createPredictDto: CreatePredictDto,
+    @GetUser() user: User,
+  ) {
+    return this.leagueService.createPredict(leagueId, createPredictDto, user);
   }
 
   @Get()

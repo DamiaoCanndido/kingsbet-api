@@ -2,10 +2,10 @@ import { BadRequestException, Injectable } from "@nestjs/common";
 import { User } from "@prisma/client";
 import { PrismaService } from "../prisma/prisma.service";
 import {
-  CreateMatch,
+  CreateMatchDto,
   CreateLeagueDto,
   UpdateLeagueDto,
-  CreatePlayer,
+  CreatePredictDto,
 } from "./dto";
 
 @Injectable()
@@ -17,22 +17,34 @@ export class LeagueService {
     return league;
   }
 
-  async createMatches(createMatch: CreateMatch) {
+  async createMatches(leagueId: string, createMatchDto: CreateMatchDto) {
+    const league = await this.prisma.league.findUnique({
+      where: { id: leagueId },
+      include: {
+        match: true,
+      },
+    });
+    if (league.match.length >= league.matchesAmount) {
+      throw new BadRequestException("Full league matches");
+    }
     const matches = await this.prisma.match.create({
-      data: createMatch,
+      data: {
+        gameId: createMatchDto.gameId,
+        leagueId,
+      },
     });
     return matches;
   }
 
-  async createPlayers(createPlayer: CreatePlayer, user: User) {
+  async createPlayers(leagueId: string, user: User) {
     const league = await this.prisma.league.findUnique({
-      where: { id: createPlayer.leagueId },
+      where: { id: leagueId },
       include: {
         Player: true,
       },
     });
     if (league.Player.length >= league.playersAmount) {
-      throw new BadRequestException("Full league");
+      throw new BadRequestException("Full league players");
     }
     if (user.cash < league.subscription) {
       throw new BadRequestException("Insufficient funds");
@@ -42,11 +54,47 @@ export class LeagueService {
     }
     const player = await this.prisma.player.create({
       data: {
-        leagueId: createPlayer.leagueId,
+        leagueId,
         userId: user.id,
       },
     });
     return player;
+  }
+
+  async createPredict(
+    leagueId: string,
+    createPredictDto: CreatePredictDto,
+    user: User,
+  ) {
+    const match = await this.prisma.match.findUnique({
+      where: {
+        id: createPredictDto.matchId,
+      },
+      include: {
+        game: true,
+      },
+    });
+
+    if (Date.now > match.game.start.getTime) {
+      throw new BadRequestException("Game already started");
+    }
+
+    const player = await this.prisma.player.findUnique({
+      where: {
+        leagueId_userId: { leagueId, userId: user.id },
+      },
+    });
+
+    const predict = await this.prisma.predict.create({
+      data: {
+        matchId: createPredictDto.matchId,
+        playerId: player.id,
+        homePredict: createPredictDto.homePredict,
+        awayPredict: createPredictDto.awayPredict,
+      },
+    });
+
+    return predict;
   }
 
   async findAll() {

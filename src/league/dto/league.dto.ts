@@ -38,9 +38,7 @@ export class UpdateLeagueDto {
   playersAccepted: number;
 }
 
-export class CreateMatch {
-  @IsString()
-  @IsNotEmpty()
+export class CreateMatchDto {
   leagueId: string;
 
   @IsString()
@@ -48,21 +46,16 @@ export class CreateMatch {
   gameId: string;
 }
 
-export class CreatePlayer {
+export class CreatePlayerDto {
   userId: string;
-
-  @IsString()
-  @IsNotEmpty()
   leagueId: string;
 }
 
-export class CreatePredict {
+export class CreatePredictDto {
   @IsString()
   @IsNotEmpty()
   matchId: string;
 
-  @IsString()
-  @IsNotEmpty()
   playerId: string;
 
   @IsInt()
