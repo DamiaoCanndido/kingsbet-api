@@ -52,8 +52,7 @@ export class LeagueController {
   @UseGuards(JwtGuard, CaslAbilityGuard)
   @Post("player")
   createPlayer(@Body() createPlayer: CreatePlayer, @GetUser() user: User) {
-    console.log(user.id);
-    return this.leagueService.createPlayers(createPlayer, user.id);
+    return this.leagueService.createPlayers(createPlayer, user);
   }
 
   @Get()

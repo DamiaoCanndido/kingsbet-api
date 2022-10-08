@@ -1,4 +1,5 @@
-import { Injectable } from "@nestjs/common";
+import { BadRequestException, Injectable } from "@nestjs/common";
+import { User } from "@prisma/client";
 import { PrismaService } from "../prisma/prisma.service";
 import {
   CreateMatch,
@@ -23,11 +24,26 @@ export class LeagueService {
     return matches;
   }
 
-  async createPlayers(createPlayer: CreatePlayer, userId: string) {
+  async createPlayers(createPlayer: CreatePlayer, user: User) {
+    const league = await this.prisma.league.findUnique({
+      where: { id: createPlayer.leagueId },
+      include: {
+        Player: true,
+      },
+    });
+    if (league.Player.length >= league.playersAmount) {
+      throw new BadRequestException("Full league");
+    }
+    if (user.cash < league.subscription) {
+      throw new BadRequestException("Insufficient funds");
+    } else {
+      const cash = user.cash - league.subscription;
+      await this.prisma.user.update({ where: { id: user.id }, data: { cash } });
+    }
     const player = await this.prisma.player.create({
       data: {
         leagueId: createPlayer.leagueId,
-        userId,
+        userId: user.id,
       },
     });
     return player;
