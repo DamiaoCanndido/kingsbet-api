@@ -75,15 +75,19 @@ export class LeagueService {
       },
     });
 
-    if (Date.now > match.game.start.getTime) {
-      throw new BadRequestException("Game already started");
-    }
-
     const player = await this.prisma.player.findUnique({
       where: {
         leagueId_userId: { leagueId, userId: user.id },
       },
     });
+
+    if (!player) {
+      throw new BadRequestException("You are not registered in the league");
+    }
+
+    if (Date.now() - 10800000 > match.game.start.getTime()) {
+      throw new BadRequestException("Game already started");
+    }
 
     const predict = await this.prisma.predict.create({
       data: {
