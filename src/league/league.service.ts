@@ -102,23 +102,19 @@ export class LeagueService {
     return predict;
   }
 
-  async getPredictsByLeague(leagueId: string) {
+  async getPredictsByMatch(matchId: string) {
     await this.prisma.predict.findMany({
       where: {
-        leagueId,
-      },
-      include: {
-        match: {
-          include: {
-            game: true,
-          },
-        },
+        matchId,
       },
     });
   }
 
   async findAll() {
     const leagues = await this.prisma.league.findMany({
+      where: {
+        isPrivate: false,
+      },
       include: {
         match: {
           select: {

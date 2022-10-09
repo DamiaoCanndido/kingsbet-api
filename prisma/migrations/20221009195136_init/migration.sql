@@ -117,14 +117,14 @@ CREATE TABLE "leagues" (
 );
 
 -- CreateTable
-CREATE TABLE "gamesOnLeagues" (
+CREATE TABLE "matches" (
     "id" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "gameId" TEXT NOT NULL,
     "leagueId" TEXT NOT NULL,
 
-    CONSTRAINT "gamesOnLeagues_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "matches_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -140,6 +140,20 @@ CREATE TABLE "players" (
     CONSTRAINT "players_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "predicts" (
+    "id" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "leagueId" TEXT NOT NULL,
+    "matchId" TEXT NOT NULL,
+    "playerId" TEXT NOT NULL,
+    "homePredict" INTEGER,
+    "awayPredict" INTEGER,
+
+    CONSTRAINT "predicts_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "users_name_key" ON "users"("name");
 
@@ -153,10 +167,13 @@ CREATE UNIQUE INDEX "teams_name_key" ON "teams"("name");
 CREATE UNIQUE INDEX "champs_name_key" ON "champs"("name");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "gamesOnLeagues_gameId_leagueId_key" ON "gamesOnLeagues"("gameId", "leagueId");
+CREATE UNIQUE INDEX "matches_gameId_leagueId_key" ON "matches"("gameId", "leagueId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "players_leagueId_userId_key" ON "players"("leagueId", "userId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "predicts_playerId_matchId_key" ON "predicts"("playerId", "matchId");
 
 -- AddForeignKey
 ALTER TABLE "groups" ADD CONSTRAINT "groups_champId_fkey" FOREIGN KEY ("champId") REFERENCES "champs"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -180,13 +197,19 @@ ALTER TABLE "games" ADD CONSTRAINT "games_champId_fkey" FOREIGN KEY ("champId") 
 ALTER TABLE "games" ADD CONSTRAINT "games_groupId_fkey" FOREIGN KEY ("groupId") REFERENCES "groups"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "gamesOnLeagues" ADD CONSTRAINT "gamesOnLeagues_gameId_fkey" FOREIGN KEY ("gameId") REFERENCES "games"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "matches" ADD CONSTRAINT "matches_gameId_fkey" FOREIGN KEY ("gameId") REFERENCES "games"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "gamesOnLeagues" ADD CONSTRAINT "gamesOnLeagues_leagueId_fkey" FOREIGN KEY ("leagueId") REFERENCES "leagues"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "matches" ADD CONSTRAINT "matches_leagueId_fkey" FOREIGN KEY ("leagueId") REFERENCES "leagues"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "players" ADD CONSTRAINT "players_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "players" ADD CONSTRAINT "players_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE NO ACTION ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "players" ADD CONSTRAINT "players_leagueId_fkey" FOREIGN KEY ("leagueId") REFERENCES "leagues"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "players" ADD CONSTRAINT "players_leagueId_fkey" FOREIGN KEY ("leagueId") REFERENCES "leagues"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "predicts" ADD CONSTRAINT "predicts_matchId_fkey" FOREIGN KEY ("matchId") REFERENCES "matches"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "predicts" ADD CONSTRAINT "predicts_playerId_fkey" FOREIGN KEY ("playerId") REFERENCES "players"("id") ON DELETE CASCADE ON UPDATE CASCADE;
