@@ -162,18 +162,19 @@ model Game {
 //------------------------------------------------------ \\
 
 model League {
-  id              String   @id @default(uuid())
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  id              String    @id @default(uuid())
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
   name            String
   playersAmount   Int
-  playersAccepted Int      @default(0)
+  playersAccepted Int       @default(0)
   matchesAmount   Int
   subscription    Float
-  isPrivate       Boolean  @default(false)
+  isPrivate       Boolean   @default(false)
   start           DateTime
   match           Match[]
   Player          Player[]
+  Predict         Predict[]
 
   @@map("leagues")
 }
@@ -213,6 +214,7 @@ model Predict {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   leagueId    String
+  league      League   @relation(fields: [leagueId], references: [id], onDelete: Cascade)
   matchId     String
   match       Match    @relation(fields: [matchId], references: [id], onDelete: Cascade)
   playerId    String

@@ -121,6 +121,7 @@ export class LeagueService {
             game: true,
           },
         },
+        Player: true,
       },
     });
     return leagues;
