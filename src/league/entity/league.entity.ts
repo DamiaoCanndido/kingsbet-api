@@ -39,4 +39,5 @@ export class PredictEntity implements Predict {
   playerId: string;
   homePredict: number;
   awayPredict: number;
+  leagueId: string;
 }

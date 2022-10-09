@@ -57,6 +57,7 @@ export class CreatePredictDto {
   matchId: string;
 
   playerId: string;
+  leagueId: string;
 
   @IsInt()
   @IsNotEmpty()

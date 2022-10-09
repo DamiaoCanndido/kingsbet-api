@@ -95,10 +95,26 @@ export class LeagueService {
         playerId: player.id,
         homePredict: createPredictDto.homePredict,
         awayPredict: createPredictDto.awayPredict,
+        leagueId,
       },
     });
 
     return predict;
+  }
+
+  async getPredictsByLeague(leagueId: string) {
+    await this.prisma.predict.findMany({
+      where: {
+        leagueId,
+      },
+      include: {
+        match: {
+          include: {
+            game: true,
+          },
+        },
+      },
+    });
   }
 
   async findAll() {
