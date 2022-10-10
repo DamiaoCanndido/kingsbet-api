@@ -52,12 +52,13 @@ export class CreatePlayerDto {
 }
 
 export class CreatePredictDto {
-  @IsString()
-  @IsNotEmpty()
   matchId: string;
-
   playerId: string;
   leagueId: string;
+
+  @IsString()
+  @IsNotEmpty()
+  gameId: string;
 
   @IsInt()
   @IsNotEmpty()

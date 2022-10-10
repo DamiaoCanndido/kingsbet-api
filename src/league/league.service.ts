@@ -68,7 +68,7 @@ export class LeagueService {
   ) {
     const match = await this.prisma.match.findUnique({
       where: {
-        id: createPredictDto.matchId,
+        gameId_leagueId: { gameId: createPredictDto.gameId, leagueId },
       },
       include: {
         game: true,
@@ -91,7 +91,7 @@ export class LeagueService {
 
     const predict = await this.prisma.predict.create({
       data: {
-        matchId: createPredictDto.matchId,
+        matchId: match.id,
         playerId: player.id,
         homePredict: createPredictDto.homePredict,
         awayPredict: createPredictDto.awayPredict,
