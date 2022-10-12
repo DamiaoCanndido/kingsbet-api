@@ -24,6 +24,9 @@ export class LeagueService {
         match: true,
       },
     });
+    if (Date.now() - 10800000 > league.start.getTime()) {
+      throw new BadRequestException("League has already started");
+    }
     if (league.match.length >= league.matchesAmount) {
       throw new BadRequestException("Full league matches");
     }
@@ -43,6 +46,9 @@ export class LeagueService {
         Player: true,
       },
     });
+    if (Date.now() - 10800000 > league.start.getTime()) {
+      throw new BadRequestException("League has already started");
+    }
     if (league.Player.length >= league.playersAmount) {
       throw new BadRequestException("Full league players");
     }
@@ -114,6 +120,26 @@ export class LeagueService {
     const leagues = await this.prisma.league.findMany({
       where: {
         isPrivate: false,
+      },
+      include: {
+        match: {
+          select: {
+            game: true,
+          },
+        },
+        Player: true,
+      },
+    });
+    return leagues;
+  }
+
+  async findLeaguesAvailable() {
+    const leagues = await this.prisma.league.findMany({
+      where: {
+        isPrivate: false,
+        start: {
+          gt: new Date(Date.now() - 10800000),
+        },
       },
       include: {
         match: {

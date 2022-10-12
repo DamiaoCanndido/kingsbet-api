@@ -79,6 +79,11 @@ export class LeagueController {
     return this.leagueService.findAll();
   }
 
+  @Get("now")
+  findLeaguesAvailable() {
+    return this.leagueService.findLeaguesAvailable();
+  }
+
   @Get(":id")
   findOne(@Param("id") id: string) {
     return this.leagueService.findOne(id);
