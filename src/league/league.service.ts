@@ -153,6 +153,28 @@ export class LeagueService {
     return leagues;
   }
 
+  async findMyLeagues(user: User) {
+    const leagues = await this.prisma.league.findMany({
+      where: {
+        isPrivate: false,
+        Player: {
+          some: {
+            userId: user.id,
+          },
+        },
+      },
+      include: {
+        match: {
+          select: {
+            game: true,
+          },
+        },
+        Player: true,
+      },
+    });
+    return leagues;
+  }
+
   async findGamesFromLeague(leagueId: string) {
     const games = await this.prisma.match.findMany({
       where: { leagueId },

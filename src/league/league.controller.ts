@@ -84,6 +84,12 @@ export class LeagueController {
     return this.leagueService.findLeaguesAvailable();
   }
 
+  @UseGuards(JwtGuard)
+  @Get("me")
+  findMyLeagues(@GetUser() user: User) {
+    return this.leagueService.findMyLeagues(user);
+  }
+
   @Get(":id")
   findOne(@Param("id") id: string) {
     return this.leagueService.findOne(id);
