@@ -108,12 +108,37 @@ export class LeagueService {
     return predict;
   }
 
-  async getPredictsByMatch(matchId: string) {
-    await this.prisma.predict.findMany({
+  async getPredictsByMatch(leagueId: string, gameId: string) {
+    const match = await this.prisma.match.findUnique({
       where: {
-        matchId,
+        gameId_leagueId: { gameId, leagueId },
       },
     });
+    const predicts = await this.prisma.predict.findMany({
+      where: {
+        matchId: match.id,
+      },
+      select: {
+        id: true,
+        leagueId: true,
+        matchId: true,
+        playerId: true,
+        homePredict: true,
+        awayPredict: true,
+        createdAt: true,
+        updatedAt: true,
+        player: {
+          select: {
+            user: {
+              select: {
+                name: true,
+              },
+            },
+          },
+        },
+      },
+    });
+    return predicts;
   }
 
   async findAll() {
