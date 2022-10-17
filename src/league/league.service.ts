@@ -95,6 +95,10 @@ export class LeagueService {
       throw new BadRequestException("Game already started");
     }
 
+    if (match.game.homeScore != null && match.game.awayScore != null) {
+      throw new BadRequestException("Game Over");
+    }
+
     const predict = await this.prisma.predict.create({
       data: {
         matchId: match.id,

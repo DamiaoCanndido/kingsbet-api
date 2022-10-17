@@ -12,7 +12,12 @@ export class GameService {
   }
 
   async findAll() {
-    const games = await this.prisma.game.findMany();
+    const games = await this.prisma.game.findMany({
+      include: {
+        home: true,
+        away: true,
+      },
+    });
     return games;
   }
 
