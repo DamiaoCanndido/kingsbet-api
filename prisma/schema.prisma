@@ -221,6 +221,7 @@ model Predict {
   player      Player   @relation(fields: [playerId], references: [id], onDelete: Cascade)
   homePredict Int?
   awayPredict Int?
+  score       Int      @default(0)
 
   @@unique([playerId, matchId])
   @@map("predicts")

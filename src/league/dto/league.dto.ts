@@ -67,4 +67,8 @@ export class CreatePredictDto {
   @IsInt()
   @IsNotEmpty()
   awayPredict: number;
+
+  @IsInt()
+  @IsNotEmpty()
+  score: number;
 }

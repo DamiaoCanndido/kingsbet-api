@@ -48,6 +48,29 @@ export class GameService {
       where: { id },
       data: updateGameDto,
     });
+
+    const predicts = await this.prisma.predict.findMany({
+      where: {
+        match: {
+          gameId: id,
+        },
+      },
+    });
+
+    predicts.forEach(async (p) => {
+      if (
+        p.homePredict == updateGameDto.homeScore &&
+        p.awayPredict == updateGameDto.awayScore
+      ) {
+        await this.prisma.predict.update({
+          where: {
+            id: p.id,
+          },
+          data: { score: 1 },
+        });
+      }
+    });
+
     return game;
   }
 
