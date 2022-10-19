@@ -1,4 +1,5 @@
 import { Injectable } from "@nestjs/common";
+import { scoreHelper } from "../helpers/score-helper";
 import { PrismaService } from "../prisma/prisma.service";
 import { CreateGameDto, UpdateGameDto } from "./dto";
 
@@ -58,17 +59,18 @@ export class GameService {
     });
 
     predicts.forEach(async (p) => {
-      if (
-        p.homePredict == updateGameDto.homeScore &&
-        p.awayPredict == updateGameDto.awayScore
-      ) {
-        await this.prisma.predict.update({
-          where: {
-            id: p.id,
-          },
-          data: { score: 1 },
-        });
-      }
+      const score = scoreHelper(
+        p.homePredict,
+        p.awayPredict,
+        updateGameDto.homeScore,
+        updateGameDto.awayScore,
+      );
+      await this.prisma.predict.update({
+        where: {
+          id: p.id,
+        },
+        data: { score },
+      });
     });
 
     return game;

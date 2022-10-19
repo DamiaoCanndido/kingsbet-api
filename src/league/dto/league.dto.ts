@@ -55,6 +55,7 @@ export class CreatePredictDto {
   matchId: string;
   playerId: string;
   leagueId: string;
+  score: number;
 
   @IsString()
   @IsNotEmpty()
@@ -67,8 +68,4 @@ export class CreatePredictDto {
   @IsInt()
   @IsNotEmpty()
   awayPredict: number;
-
-  @IsInt()
-  @IsNotEmpty()
-  score: number;
 }
