@@ -145,7 +145,13 @@ export class LeagueService {
       });
       table.push({ player: player.user.name, points: sum._sum.score });
     }
-
+    table.sort(function (a, b) {
+      if (a.points > b.points) {
+        return -1;
+      } else {
+        return 0;
+      }
+    });
     return table;
   }
 
