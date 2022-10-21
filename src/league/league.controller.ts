@@ -69,6 +69,11 @@ export class LeagueController {
     return this.leagueService.createPredict(leagueId, createPredictDto, user);
   }
 
+  @Get(":leagueId/table")
+  getTableByLeague(@Param("leagueId") leagueId: string) {
+    return this.leagueService.getTableByLeague(leagueId);
+  }
+
   @UseGuards(JwtGuard)
   @Get(":leagueId/game/:gameId")
   getPredictsByMatch(

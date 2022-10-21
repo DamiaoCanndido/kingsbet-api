@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from "@nestjs/common";
+import { BadRequestException, ConsoleLogger, Injectable } from "@nestjs/common";
 import { User } from "@prisma/client";
 import { PrismaService } from "../prisma/prisma.service";
 import {
@@ -110,6 +110,43 @@ export class LeagueService {
     });
 
     return predict;
+  }
+
+  async getTableByLeague(leagueId: string) {
+    const players = await this.prisma.predict.groupBy({
+      by: ["playerId"],
+      where: {
+        leagueId,
+      },
+    });
+
+    let table: { player: string; points: number }[] = [];
+
+    for (let i = 0; i < players.length; i++) {
+      const player = await this.prisma.player.findUnique({
+        where: {
+          id: players[i].playerId,
+        },
+        select: {
+          user: {
+            select: {
+              name: true,
+            },
+          },
+        },
+      });
+      const sum = await this.prisma.predict.aggregate({
+        where: {
+          playerId: players[i].playerId,
+        },
+        _sum: {
+          score: true,
+        },
+      });
+      table.push({ player: player.user.name, points: sum._sum.score });
+    }
+
+    return table;
   }
 
   async getPredictsByMatch(leagueId: string, gameId: string) {
