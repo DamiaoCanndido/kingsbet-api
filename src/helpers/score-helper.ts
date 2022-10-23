@@ -5,7 +5,14 @@ export const scoreHelper = (
   awayScore: number,
 ): number => {
   if (homePredict == homeScore && awayPredict == awayScore) {
-    return 25;
+    return 3;
+  }
+  if (
+    (homeScore > awayScore && homePredict > awayPredict) ||
+    (homeScore < awayScore && homePredict < awayPredict) ||
+    (homeScore == awayScore && homePredict == awayPredict)
+  ) {
+    return 1;
   }
   return 0;
 };
