@@ -36,6 +36,16 @@ export class GameService {
     return games;
   }
 
+  async findByChamp(champId: string) {
+    const games = await this.prisma.game.findMany({
+      where: {
+        champId,
+      },
+      include: { home: true, away: true, champ: true },
+    });
+    return games;
+  }
+
   async findOne(id: string) {
     const game = await this.prisma.game.findUnique({
       where: { id },

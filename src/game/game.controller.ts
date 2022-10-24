@@ -40,6 +40,11 @@ export class GameController {
     return this.gameService.findByLeague(leagueId);
   }
 
+  @Get(":champId/champ")
+  findByChamp(@Param("champId") champId: string) {
+    return this.gameService.findByChamp(champId);
+  }
+
   @Get(":id")
   findOne(@Param("id") id: string) {
     return this.gameService.findOne(id);
