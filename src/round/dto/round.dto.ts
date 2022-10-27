@@ -19,18 +19,10 @@ export class CreateRoundDto {
   @IsString()
   @IsNotEmpty()
   groupId: string;
-
-  @IsInt()
-  @IsNotEmpty()
-  numberGames: number;
 }
 
 export class UpdateRoundDto {
   @IsEnum(RoundType)
   @IsOptional()
   name: RoundType;
-
-  @IsInt()
-  @IsOptional()
-  numberGames: number;
 }

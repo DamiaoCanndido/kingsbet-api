@@ -35,11 +35,6 @@ export class GameController {
     return this.gameService.findAll();
   }
 
-  @Get(":leagueId/league")
-  findByLeague(@Param("leagueId") leagueId: string) {
-    return this.gameService.findByLeague(leagueId);
-  }
-
   @Get(":champId/champ")
   findByChamp(@Param("champId") champId: string) {
     return this.gameService.findByChamp(champId);

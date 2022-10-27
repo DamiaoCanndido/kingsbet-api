@@ -8,5 +8,4 @@ export class UserEntity implements User {
   email: string;
   hash: string;
   isAdmin: boolean;
-  cash: number;
 }

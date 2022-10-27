@@ -27,8 +27,15 @@ export class TeamService {
     return team;
   }
 
-  async findAll() {
-    const teams = await this.prisma.team.findMany();
+  async findAll(name: string) {
+    const teams = await this.prisma.team.findMany({
+      where: {
+        name: {
+          contains: name,
+          mode: "insensitive",
+        },
+      },
+    });
     return teams;
   }
 

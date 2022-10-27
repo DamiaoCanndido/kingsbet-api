@@ -9,4 +9,5 @@ export class ChampEntity implements Champ {
   shieldUrl: string;
   shieldKey: string;
   champType: ChampType;
+  season: string;
 }

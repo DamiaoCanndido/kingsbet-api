@@ -19,6 +19,7 @@ export class ChampService {
         champType: createChampDto.champType,
         shieldKey: shield.Key,
         shieldUrl: shield.Location,
+        season: createChampDto.season,
       },
     });
 

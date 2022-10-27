@@ -14,6 +14,10 @@ export class CreateChampDto {
   @IsNotEmpty()
   country: string;
 
+  @IsString()
+  @IsNotEmpty()
+  season: string;
+
   @IsEnum(ChampType)
   @IsNotEmpty()
   champType: ChampType;

@@ -9,7 +9,6 @@ import { CaslModule } from "./casl/casl.module";
 import { GroupModule } from "./group/group.module";
 import { RoundModule } from "./round/round.module";
 import { GameModule } from "./game/game.module";
-import { LeagueModule } from "./league/league.module";
 
 @Module({
   imports: [
@@ -25,7 +24,6 @@ import { LeagueModule } from "./league/league.module";
     GroupModule,
     RoundModule,
     GameModule,
-    LeagueModule,
   ],
   controllers: [],
   providers: [],

@@ -8,6 +8,4 @@ export class RoundEntity implements Round {
   order: number;
   champId: string;
   groupId: string;
-  playOffs: boolean;
-  numberGames: number;
 }

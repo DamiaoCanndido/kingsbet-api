@@ -18,7 +18,7 @@ import { CreateTeamDto, UpdateTeamDto } from "./dto";
 import { TeamService } from "./team.service";
 import { CaslAbilityGuard } from "../casl/guard";
 import { CheckCaslAbility } from "../casl/decorators";
-import { Put } from "@nestjs/common/decorators";
+import { Put, Query } from "@nestjs/common/decorators";
 import { GenericAbilities } from "../casl/decorators/generic-abilities";
 import { TeamEntity } from "./entity";
 
@@ -39,8 +39,8 @@ export class TeamController {
   }
 
   @Get()
-  findAll() {
-    return this.teamService.findAll();
+  findAll(@Query("name") name: string) {
+    return this.teamService.findAll(name);
   }
 
   @Get(":id")

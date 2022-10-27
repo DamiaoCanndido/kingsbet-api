@@ -22,20 +22,6 @@ export class GameService {
     return games;
   }
 
-  async findByLeague(leagueId: string) {
-    const games = await this.prisma.game.findMany({
-      where: {
-        match: {
-          some: {
-            leagueId,
-          },
-        },
-      },
-      include: { home: true, away: true, champ: true },
-    });
-    return games;
-  }
-
   async findByChamp(champId: string) {
     const games = await this.prisma.game.findMany({
       where: {
@@ -58,29 +44,6 @@ export class GameService {
     const game = await this.prisma.game.update({
       where: { id },
       data: updateGameDto,
-    });
-
-    const predicts = await this.prisma.predict.findMany({
-      where: {
-        match: {
-          gameId: id,
-        },
-      },
-    });
-
-    predicts.forEach(async (p) => {
-      const score = scoreHelper(
-        p.homePredict,
-        p.awayPredict,
-        updateGameDto.homeScore,
-        updateGameDto.awayScore,
-      );
-      await this.prisma.predict.update({
-        where: {
-          id: p.id,
-        },
-        data: { score },
-      });
     });
 
     return game;

@@ -11,7 +11,9 @@ export class RoundService {
       where: { groupId: createRoundDto.groupId },
       orderBy: { order: "desc" },
     });
-    if (!roundCheck) {
+    if (createRoundDto.order) {
+      // do nothing
+    } else if (!roundCheck) {
       createRoundDto.order = 1;
     } else {
       createRoundDto.order = roundCheck.order + 1;
